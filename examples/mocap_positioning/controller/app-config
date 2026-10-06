@@ -1,0 +1,31 @@
+# Build for the Crazyflie 2.1 Brushless: the cf21bl platform, as the firmware's
+# configs/cf21bl_defconfig does, not the default cf2.
+# CONFIG_PLATFORM_CF2 is not set
+CONFIG_PLATFORM_CF21BL=y
+CONFIG_THRUST_BAT_COMPENSATION_MAX_THRUST=200
+# CONFIG_MODIFY_CF_MASS is not set
+
+CONFIG_APP_ENABLE=y
+# CONFIG_APP_API_TEST is not set
+CONFIG_APP_STACKSIZE=300
+CONFIG_APP_PRIORITY=1
+
+CONFIG_MOTORS_REQUIRE_ARMING=y
+CONFIG_MOTORS_ESC_PROTOCOL_DSHOT=y
+# CONFIG_MOTORS_DSHOT_PWM_150KHZ is not set
+CONFIG_MOTORS_DSHOT_PWM_300KHZ=y
+# CONFIG_MOTORS_DSHOT_PWM_600KHZ is not set
+CONFIG_MOTORS_ESC_PROTOCOL_DSHOT_BIDIRECTIONAL=y
+CONFIG_MOTORS_NBR_OF_POLES=12
+# Idle thrust 0 keeps the motors fully stopped while armed (the cf21bl floors
+# armed motors at idleThrust otherwise). This demo never wants the props to spin.
+CONFIG_MOTORS_DEFAULT_IDLE_THRUST=0
+CONFIG_MOTORS_DEFAULT_PROP_TEST_PWM_RATIO=0
+CONFIG_MOTORS_DEFAULT_BAT_TEST_PWM_RATIO=0
+CONFIG_POWER_DISTRIBUTION_QUADROTOR=y
+# CONFIG_LOG_MOTOR_CAP_WARNING is not set
+
+CONFIG_CONTROLLER_OOT=y
+# Drop a radio packet on a full queue or bad checksum instead of asserting, which
+# reboots the drone and cuts the motors mid-flight.
+# CONFIG_RADIO_ASSERT_ON_COM_PROBLEM is not set

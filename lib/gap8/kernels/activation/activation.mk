@@ -1,0 +1,11 @@
+ifndef CF_GAP8_QACTIVATION_INCLUDED
+CF_GAP8_QACTIVATION_INCLUDED := 1
+
+CF_GAP8_QACTIVATION_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+
+APP_INC += $(CF_GAP8_QACTIVATION_DIR)/inc
+APP_SRCS += $(CF_GAP8_QACTIVATION_DIR)/src/cf_qactivation_reference.c
+APP_SRCS += $(CF_GAP8_QACTIVATION_DIR)/src/cf_qactivation_lut.c
+APP_SRCS += $(CF_GAP8_QACTIVATION_DIR)/src/cf_qsoftmax.c
+
+endif

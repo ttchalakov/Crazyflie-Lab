@@ -1,0 +1,49 @@
+radio:
+  uri: radio://0/80/2M/E7E7E7E7E7
+
+telemetry:
+  enabled: true
+  state_hz: 0
+  controls_hz: 0
+  setpoints: false
+  mocap: false
+  extpose: false
+  camera: false
+  custom:
+    stm32_ticks:
+      period_ms: 100
+      variables:
+        - demoStm.tick:uint32_t
+    gap8_ticks:
+      period_ms: 100
+      variables:
+        - demoGap.tick:uint32_t
+        - demoGap.received:uint32_t
+    sysid_imu:
+      period_ms: 20
+      variables:
+        - acc.x:float
+        - acc.y:float
+        - acc.z:float
+        - gyro.x:float
+        - gyro.y:float
+        - gyro.z:float
+    sysid_motor_request:
+      period_ms: 40
+      variables:
+        - motor.m1req:int32_t
+        - motor.m2req:int32_t
+        - motor.m3req:int32_t
+        - motor.m4req:int32_t
+        - pm.vbat:float
+    sysid_motor_response:
+      period_ms: 40
+      variables:
+        - motor.m1:uint16_t
+        - motor.m2:uint16_t
+        - motor.m3:uint16_t
+        - motor.m4:uint16_t
+        - motor.m1_rpm:uint16_t
+        - motor.m2_rpm:uint16_t
+        - motor.m3_rpm:uint16_t
+        - motor.m4_rpm:uint16_t

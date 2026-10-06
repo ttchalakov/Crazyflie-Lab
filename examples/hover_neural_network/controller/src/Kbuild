@@ -1,0 +1,3 @@
+ccflags-y += -I$(src)/../../include
+
+obj-y += hover_nn_controller.o

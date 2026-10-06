@@ -1,0 +1,78 @@
+.venv/
+.run/
+.nanocockpit-dev/
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+# Run output. The top-level artifacts/cache/ holds cflib's param/log TOC cache,
+# downloaded from the drone on connect (machine- and firmware-specific).
+artifacts/
+
+# Kbuild objects that out-of-tree controller builds leave beside their sources,
+# wherever the controller lives (examples/, templates/, or a user's project).
+*.o
+.*.cmd
+
+# Crazyflie out-of-tree builds leave a few generated files beside source.
+examples/**/controller/build/
+# Example output (telemetry runs, bench results, debug logs), not source.
+examples/**/artifacts/
+examples/**/controller/**/*.o
+examples/**/controller/**/*.cmd
+examples/**/controller/**/*.d
+examples/**/controller/**/*.elf
+examples/**/controller/**/*.hex
+examples/**/controller/**/*.bin
+examples/**/controller/**/*.map
+
+# GAP8 in-tree build output (the GAP-SDK BUILD/ dir), produced by building an
+# example's gap8/ app directly against the SDK.
+examples/**/gap8/BUILD/
+
+# DORY codegen output: machine-emitted layer C, generated headers, and int8
+# weight blobs under each example's gap8/<net>/generated/ (e.g. policy/).
+# Fully disposable build artifacts: `cf-lab compile-model --integrate-into ...`
+# regenerates the whole tree, and a fresh clone must run it before it can
+# build/flash.
+examples/*/gap8/*/generated/
+
+# Model inputs the pipeline materializes rather than carries: the checkpoint and
+# calibration .npy (written by the model module's train or make-artifacts
+# command) and any ONNX export. A fresh clone regenerates them. Only the model
+# definition + export hook (*.py) stay tracked. Applies to example-owned models
+# (examples/<name>/model/) and the reusable templates (templates/neural_networks/).
+# DORY/NEMO pipeline OUTPUT lands in build/ dirs, already ignored above.
+examples/**/model/*.pt
+examples/**/model/*.onnx
+examples/**/model/*.npy
+# Datasets a training step downloads (under model/data/).
+examples/**/model/data/
+templates/neural_networks/**/*.pt
+templates/neural_networks/**/*.onnx
+templates/neural_networks/**/*.npy
+
+external/*
+!external/
+!external/README.md
+!external/crazyflie-firmware
+!external/crazyflie-firmware/
+!external/nemo
+!external/nemo/
+!external/dory
+!external/dory/
+!external/aideck-esp-firmware
+!external/aideck-esp-firmware/
+
+# Built documentation site (zensical build).
+/site/
+
+# hyperbus_bench writes its load-test file into the app readfs before each build.
+examples/hyperbus_bench/gap8/readfs/hb_load.bin

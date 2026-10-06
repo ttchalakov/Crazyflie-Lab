@@ -1,0 +1,100 @@
+# Lab default for one Crazyflie 2.1 Brushless.
+radio:
+  uri: radio://0/80/2M/E7E7E7E7E7
+
+mocap:
+  rigid_body: cf21bl_01
+  # Live transport that `--source optitrack` resolves to: vrpn | natnet.
+  transport: natnet
+  stream_rate_hz: 100.0      # extpose uplink rate cap / fake-source pacing
+  pose_timeout_s: 1.0        # once armed: this long without a pose -> MocapLost (examples land)
+  # VRPN-via-ROS (rosbridge) connection — used when transport: vrpn.
+  vrpn:
+    ros_host: localhost
+    ros_port: 9090
+    topic: ""               # blank = /vrpn_client_node/<rigid_body>/pose
+    orientation_format: quaternion
+  # Native NatNet (Motive, no ROS) connection — used when transport: natnet.
+  natnet:
+    server_ip: 192.168.1.114  # Motive PC IP; required when transport: natnet
+    multicast_ip: 239.255.42.99
+    command_port: 1510
+    data_port: 1511
+    local_ip: ""            # this laptop's IP on the Motive net (picks the NIC)
+    use_multicast: false     # Motive streams Unicast in this lab (not multicast)
+
+# AI-deck image stream. `cf-lab build gap8` / `cf-lab flash gap8` build these
+# WiFi settings into apps that use them (camera_stream, hover_neural_network), and
+# the host reads the same section to connect, so the two agree. An app built
+# before a change here keeps the old settings until it is rebuilt. Leave the
+# selected mode's SSID blank to disable the feed entirely.
+#
+# mode: access_point -> the deck IS the network; the host must join it, which on
+#                       a single-NIC machine takes it off the mocap network.
+#                       cf_lab.preflight.camera refuses that combination.
+#       station       -> the deck joins the network below, so images and mocap
+#                        share one interface.
+# Either way the host finds the deck by name: the build names it after radio.uri
+# (cf-80-2m-e7e7e7e7e7.local) over mDNS. `cf-lab find-deck` prints its address.
+camera:
+  # The deck's ESP32 is 2.4 GHz ONLY: `station_ssid` must be a dedicated 2.4 GHz network,
+  # not a band-steering SSID (Google/Nest Wifi), or it never associates.
+  # Toggle mode to select a credential pair; both pairs can stay configured.
+  mode: station            # station | access_point
+  station_ssid: ViconRouter_2.4G
+  station_key: "ViconRouter"
+  access_point_ssid: camera-stream
+  access_point_key: ""
+  # Access point channel, 1..13 (1..11 in the US); 0 keeps the ESP32 firmware's 6.
+  # Choose one away from strong neighbours: `nmcli device wifi list`.
+  access_point_channel: 6
+  deck_port: 5000
+  transport: tcp            # tcp | udp
+
+
+telemetry:
+  enabled: true
+  # Level 1: the controller/estimator view, suitable for every experiment.
+  # state_pos = EKF x/y/z + vx/vy/vz (a translational 6D state).
+  # state_att = EKF roll/pitch/yaw + filtered gyro p/q/r. Together these are
+  # the controller-view 12D state; the rates are sensor signals, not EKF outputs.
+  state_hz: 100.0        # shared state_pos/state_att rate (max 100 Hz)
+  controls_hz: 100.0     # pre-mixer PID output: thrust/roll/pitch/yaw legacy commands
+  setpoints: true       # position/yaw setpoints actually sent by the host
+  mocap: true           # every raw 6D mocap sample; no recorder-side rate cap
+  extpose: true         # runner-framed 6D poses after the radio uplink rate cap
+  camera: false         # record every frame from the `camera:` feed above
+
+  # Level 2: uncomment for system-identification runs. These are the filtered
+  # signals presented to the estimator/controller and the complete motor path;
+  # they are intentionally off for ordinary runs to preserve radio bandwidth.
+  # Each stream must fit one <= 26-byte STM32 log block.
+  custom:
+    sysid_imu:
+      period_ms: 20
+      variables:
+        - acc.x:float
+        - acc.y:float
+        - acc.z:float
+        - gyro.x:float
+        - gyro.y:float
+        - gyro.z:float
+    sysid_motor_request:
+      period_ms: 40
+      variables:
+        - motor.m1req:int32_t
+        - motor.m2req:int32_t
+        - motor.m3req:int32_t
+        - motor.m4req:int32_t
+        - pm.vbat:float
+    sysid_motor_response:
+      period_ms: 40
+      variables:
+        - motor.m1:uint16_t
+        - motor.m2:uint16_t
+        - motor.m3:uint16_t
+        - motor.m4:uint16_t
+        - motor.m1_rpm:uint16_t
+        - motor.m2_rpm:uint16_t
+        - motor.m3_rpm:uint16_t
+        - motor.m4_rpm:uint16_t

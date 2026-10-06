@@ -1,0 +1,81 @@
+# Install instructions: README.md.
+# Release: bump `version` below, commit, then `git tag vX.Y.Z && git push --tags`.
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cf-lab"
+version = "0.1.0"
+description = "Crazyflie 2.1 Brushless + AI-deck research SDK: C libraries, a build/flash CLI, and a host toolkit"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+authors = [{ name = "Teodor Tchalakov" }]
+dependencies = [
+  "cflib>=0.1.28",
+  "kaleido>=1.0",
+  "numpy>=1.26",
+  "plotly>=6.1",
+  "PyYAML>=6.0.2",
+  "roslibpy>=1.7",
+  # Telemetry recording.
+  "pyarrow>=17",
+  # Viewing camera frames: PyQt6 draws the viewer window, OpenCV decodes JPEG.
+  # imageio-ffmpeg is here for its bundled static ffmpeg (with libx264 and libvpx):
+  # opencv-python's bundled FFmpeg cannot encode H.264, and the mp4v it does write
+  # will not play in a browser or VSCode.
+  "PyQt6>=6.7",
+  "opencv-python>=4.10",
+  "imageio-ffmpeg>=0.5",
+  # AI-deck model tooling (NEMO/DORY themselves run in Docker).
+  "torch>=2.2",
+  "onnx>=1.16",
+  # Tests and lint. pytest-xdist runs the tests in parallel: `pytest -n auto`.
+  "pytest>=8.2",
+  "pytest-xdist>=3.6",
+  "ruff>=0.5",
+  # Documentation site.
+  "zensical>=0.0.65",
+]
+
+[project.optional-dependencies]
+# Tools this repo does not import but a Crazyflie developer wants at hand:
+# cfclient is Bitcraze's GUI (console, parameters, logging, flashing release zips).
+dev = ["cfclient>=2024.7"]
+
+[project.scripts]
+cf-lab = "cf_lab.cli:main"
+
+[project.urls]
+Repository = "https://github.com/IllinoisReliableAutonomyGroup/Crazyflie-Lab"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+exclude = ["external"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+# Test files in different folders may share a name.
+addopts = ["--import-mode=importlib", "--strict-markers"]
+# tests/conftest.py marks every test with its folder's name: `pytest -m camera`.
+markers = [
+  "analysis: cf_lab.analysis datasets, time sync, flight and plots",
+  "benches: examples/*/host bench tooling (names, matrices, ledgers)",
+  "build_flash: cf_lab.aideck, cf_lab.firmware, cf_lab.stm32_flash, cf_lab.sdk",
+  "camera: cf_lab.camera and cf_lab.imgstream",
+  "core: cf_lab.config, cf_lab.cli, cf_lab.bench, cf_lab.progress",
+  "crazyflie: cf_lab.crazyflie, cf_lab.backends, cf_lab.runner",
+  "dynamics: cf_lab.sim and cf_lab.trajectory",
+  "mocap: cf_lab.mocap",
+  "preflight: cf_lab.preflight",
+  "telemetry: cf_lab.telemetry",
+  "slow: takes more than about two seconds",
+]

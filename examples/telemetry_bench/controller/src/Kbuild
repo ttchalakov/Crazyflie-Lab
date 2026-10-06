@@ -1,0 +1,3 @@
+include $(CF_LAB)/lib/stm32/cpx_bridge/cpx_bridge.mk
+ccflags-y += -I$(src)/../../include
+obj-y += telemetry_bench_app.o

@@ -1,0 +1,44 @@
+{
+ "cases": {
+  "echo-tcp": {
+   "git": "11bdf47",
+   "recorded": "2026-09-30T10:50:59",
+   "rtt_median_ms": 5.86
+  },
+  "echo-udp": {
+   "git": "11bdf47",
+   "recorded": "2026-09-30T10:52:08",
+   "rtt_median_ms": 3.99
+  },
+  "stream-1020x1000-tcp": {
+   "git": "11bdf47",
+   "mbps": 5.628,
+   "recorded": "2026-09-30T10:50:55"
+  },
+  "stream-1020x1000-udp": {
+   "git": "11bdf47",
+   "mbps": 6.743,
+   "recorded": "2026-09-30T10:52:04"
+  },
+  "stream-512x500-tcp": {
+   "git": "11bdf47",
+   "mbps": 1.995,
+   "recorded": "2026-09-30T10:50:51"
+  },
+  "stream-512x500-udp": {
+   "git": "11bdf47",
+   "mbps": 2.047,
+   "recorded": "2026-09-30T10:52:00"
+  },
+  "stream-64x50-tcp": {
+   "git": "11bdf47",
+   "mbps": 0.025,
+   "recorded": "2026-09-30T10:50:47"
+  },
+  "stream-64x50-udp": {
+   "git": "11bdf47",
+   "mbps": 0.025,
+   "recorded": "2026-09-30T10:51:56"
+  }
+ }
+}

@@ -1,0 +1,26 @@
+# jpeg_cluster_bench sets. See ../README.md.
+#
+# A case encodes a window of the real frame in gap8/realimg.c (320x240,
+# stride 320), with optional -D flags for the encoder (lib/gap8/jpeg/jpeg.mk).
+# Its JPEG must be byte-identical to the host's for that window, in GVSOC and
+# on the deck. A deck run records rounds of 100 frames for `seconds` (default 60).
+# A case is named <W>x<H>, plus -no_<switch> when it builds with
+# -DJPEG_CL_<SWITCH>=0; soak is 320x240 for 900 s.
+cases:
+  320x240: {window: 320x240}
+  316x236: {window: 316x236}     # neither side a multiple of 8: partial edge blocks
+  96x96: {window: 96x96}         # a network's input size; the buffers clear the rigorous bound
+  soak: {window: 320x240, seconds: 900}
+  # The encoder's optimisations, each off. Each must leave the bytes unchanged.
+  320x240-no_fast_gather: {window: 320x240, defines: -DJPEG_CL_FAST_GATHER=0}
+  320x240-no_early_eob: {window: 320x240, defines: -DJPEG_CL_EARLY_EOB=0}
+  # The FC stages the tables into L1, a cost GVSOC does not model.
+  320x240-no_stage_on_cluster: {window: 320x240, defines: -DJPEG_CL_STAGE_ON_CLUSTER=0}
+
+sets:
+  common:
+    gvsoc: [320x240]
+    aideck: [320x240]
+  exhaustive:
+    gvsoc: [320x240, 316x236, 96x96, 320x240-no_fast_gather, 320x240-no_early_eob, 320x240-no_stage_on_cluster]
+    aideck: [soak, 316x236, 96x96, 320x240-no_fast_gather, 320x240-no_early_eob, 320x240-no_stage_on_cluster]

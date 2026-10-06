@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "cf-lab: a Crazyflie 2.1 Brushless and AI-deck research SDK"
+type: software
+version: 0.1.0
+license: GPL-3.0-only
+repository-code: "https://github.com/IllinoisReliableAutonomyGroup/Crazyflie-Lab"
+authors:
+  - family-names: "Tchalakov"
+    given-names: "Teodor"
+    affiliation: "Reliable Autonomy Group, University of Illinois Urbana-Champaign"

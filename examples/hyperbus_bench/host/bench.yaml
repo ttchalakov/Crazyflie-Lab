@@ -1,0 +1,36 @@
+# hyperbus_bench settings. See ../README.md.
+#
+# The L3 weight load (test 4): a file of `kb` KB (a xorshift32 stream from `seed`)
+# in the readfs is copied into HyperRAM the way our DORY fork's load_file_to_ram()
+# does it, `iterations` times per step, and checked. Each step is chunk:spi:fc_mhz --
+#   chunk   bytes per pi_fs_direct_read/pi_ram_write (DORY's loader: 4096, down to
+#           128 when L2 is short)
+#   spi     quiet (CPX SPI held during the load), burst (~25 console lines queued
+#           just before it) or chatter (console traffic throughout)
+#   fc_mhz  the FC clock, which the HyperBus clock follows
+# kb: 0 leaves the test out.
+load:
+  kb: 608          # the size of nn_bench's mlp-12to768to768to4 weights
+  seed: 0x12345678
+  iterations: 5
+  plan:
+    - 128:burst:150
+    - 1024:burst:150
+    - 4096:burst:150
+    - 4096:quiet:150
+    - 4096:chatter:150
+    - 4096:burst:50
+    - 4096:burst:200
+
+# The tiled layer (test 5), over the file test 4 loads: all 8 cluster cores compute
+# on one 16 KB tile while core 0 fetches the next from HyperRAM (pi_cl_ram_read),
+# DORY's L3 weight tiling. Each step is cl_mhz:spi; `iterations` passes over every tile.
+# nn_bench and kernel_bench both run the cluster at 150 MHz.
+tiles:
+  iterations: 20
+  plan:
+    - 50:burst
+    - 50:quiet
+    - 50:chatter
+    - 150:burst
+    - 150:chatter

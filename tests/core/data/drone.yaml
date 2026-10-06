@@ -1,0 +1,57 @@
+# The lab's configs/drone.yaml with its credentials and addresses replaced by dummies.
+radio:
+  uri: radio://0/80/2M/E7E7E7E7E7
+
+mocap:
+  rigid_body: cf21bl_01
+  transport: natnet
+  stream_rate_hz: 100.0
+  vrpn:
+    ros_host: localhost
+    ros_port: 9090
+    topic: ""
+    orientation_format: quaternion
+  natnet:
+    server_ip: 192.0.2.10
+    multicast_ip: 239.255.42.99
+    command_port: 1510
+    data_port: 1511
+    local_ip: 192.0.2.20
+    use_multicast: false
+
+camera:
+  mode: station
+  station_ssid: lab-2g4-dummy
+  station_key: station-key-dummy
+  access_point_ssid: deck-ap-dummy
+  access_point_key: ap-key-dummy
+  access_point_channel: 6
+  deck_port: 5000
+  transport: tcp
+
+telemetry:
+  enabled: true
+  state_hz: 100.0
+  controls_hz: 100.0
+  setpoints: true
+  mocap: true
+  extpose: true
+  camera: false
+  custom:
+    sysid_imu:
+      period_ms: 20
+      variables:
+        - acc.x:float
+        - acc.y:float
+        - acc.z:float
+        - gyro.x:float
+        - gyro.y:float
+        - gyro.z:float
+    sysid_motor_request:
+      period_ms: 40
+      variables:
+        - motor.m1req:int32_t
+        - motor.m2req:int32_t
+        - motor.m3req:int32_t
+        - motor.m4req:int32_t
+        - pm.vbat:float

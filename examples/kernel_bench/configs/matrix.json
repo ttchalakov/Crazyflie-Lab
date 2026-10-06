@@ -1,0 +1,1952 @@
+{
+  "schema_version": 2,
+  "defaults": {
+    "seed": 12648430,
+    "warmups": 1,
+    "runs": 3,
+    "element_bits": 8,
+    "base_alignment_bytes": 16,
+    "misalignment_offset_bytes": 0,
+    "memory": "l1",
+    "activation": "none",
+    "input1_multiplier": 1,
+    "input2_multiplier": 1
+  },
+  "shapes": {
+    "linear-16to16": {
+      "family": "linear",
+      "m": 1,
+      "n": 16,
+      "k": 16,
+      "input_channels": 16,
+      "output_channels": 16
+    },
+    "linear-33to17": {
+      "family": "linear",
+      "m": 1,
+      "n": 17,
+      "k": 33,
+      "input_channels": 33,
+      "output_channels": 17
+    },
+    "linear-64to64": {
+      "family": "linear",
+      "m": 1,
+      "n": 64,
+      "k": 64,
+      "input_channels": 64,
+      "output_channels": 64
+    },
+    "linear-12to256": {
+      "family": "linear",
+      "m": 1,
+      "n": 256,
+      "k": 12,
+      "input_channels": 12,
+      "output_channels": 256
+    },
+    "linear-256to256": {
+      "family": "linear",
+      "m": 1,
+      "n": 256,
+      "k": 256,
+      "input_channels": 256,
+      "output_channels": 256
+    },
+    "linear-256to4": {
+      "family": "linear",
+      "m": 1,
+      "n": 4,
+      "k": 256,
+      "input_channels": 256,
+      "output_channels": 4
+    },
+    "linear-32to17": {
+      "family": "linear",
+      "m": 1,
+      "n": 17,
+      "k": 32,
+      "input_channels": 32,
+      "output_channels": 17
+    },
+    "linear-128to129": {
+      "family": "linear",
+      "m": 1,
+      "n": 129,
+      "k": 128,
+      "input_channels": 128,
+      "output_channels": 129
+    },
+    "linear-65to64": {
+      "family": "linear",
+      "m": 1,
+      "n": 64,
+      "k": 65,
+      "input_channels": 65,
+      "output_channels": 64
+    },
+    "linear-127to129": {
+      "family": "linear",
+      "m": 1,
+      "n": 129,
+      "k": 127,
+      "input_channels": 127,
+      "output_channels": 129
+    },
+    "linear-255to256": {
+      "family": "linear",
+      "m": 1,
+      "n": 256,
+      "k": 255,
+      "input_channels": 255,
+      "output_channels": 256
+    },
+    "matmul4x2-64to64": {
+      "family": "matmul",
+      "m": 2,
+      "n": 64,
+      "k": 64,
+      "input_channels": 64,
+      "output_channels": 64
+    },
+    "matmul4x2-144to32": {
+      "family": "matmul",
+      "m": 2,
+      "n": 32,
+      "k": 144,
+      "input_channels": 144,
+      "output_channels": 32
+    },
+    "matmul4x2-288to64": {
+      "family": "matmul",
+      "m": 2,
+      "n": 64,
+      "k": 288,
+      "input_channels": 288,
+      "output_channels": 64
+    },
+    "matmul4x2-576to32": {
+      "family": "matmul",
+      "m": 2,
+      "n": 32,
+      "k": 576,
+      "input_channels": 576,
+      "output_channels": 32
+    },
+    "matmul4x2-63to13": {
+      "family": "matmul",
+      "m": 2,
+      "n": 13,
+      "k": 63,
+      "input_channels": 63,
+      "output_channels": 13
+    },
+    "conv3x3-8x8c16to32": {
+      "family": "conv",
+      "height": 8,
+      "width": 8,
+      "input_channels": 16,
+      "output_channels": 32,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 1,
+      "stride_w": 1,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "conv3x3-17x3c16to32": {
+      "family": "conv",
+      "height": 3,
+      "width": 17,
+      "input_channels": 16,
+      "output_channels": 32,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 1,
+      "stride_w": 1,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "conv3x3s2-17x15c8to24": {
+      "family": "conv",
+      "height": 15,
+      "width": 17,
+      "input_channels": 8,
+      "output_channels": 24,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 2,
+      "stride_w": 2,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "conv3x3-9x7c7to13": {
+      "family": "conv",
+      "height": 7,
+      "width": 9,
+      "input_channels": 7,
+      "output_channels": 13,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 1,
+      "stride_w": 1,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "dw3x3-16x16c32": {
+      "family": "dw",
+      "height": 16,
+      "width": 16,
+      "input_channels": 32,
+      "output_channels": 32,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 1,
+      "stride_w": 1,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "dw3x3-17x3c16": {
+      "family": "dw",
+      "height": 3,
+      "width": 17,
+      "input_channels": 16,
+      "output_channels": 16,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 1,
+      "stride_w": 1,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "dw3x3s2-17x15c24": {
+      "family": "dw",
+      "height": 15,
+      "width": 17,
+      "input_channels": 24,
+      "output_channels": 24,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 2,
+      "stride_w": 2,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "dw3x3-9x7c13": {
+      "family": "dw",
+      "height": 7,
+      "width": 9,
+      "input_channels": 13,
+      "output_channels": 13,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 1,
+      "stride_w": 1,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "dw3x3-9x7c7-padt0b2l1r0": {
+      "family": "dw",
+      "height": 7,
+      "width": 9,
+      "input_channels": 7,
+      "output_channels": 7,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 1,
+      "stride_w": 1,
+      "padding_top": 0,
+      "padding_bottom": 2,
+      "padding_left": 1,
+      "padding_right": 0
+    },
+    "vec16": {
+      "family": "activation",
+      "m": 1,
+      "n": 16,
+      "input_channels": 16,
+      "output_channels": 16
+    },
+    "vec63": {
+      "family": "activation",
+      "m": 1,
+      "n": 63,
+      "input_channels": 63,
+      "output_channels": 63
+    },
+    "vec256": {
+      "family": "activation",
+      "m": 1,
+      "n": 256,
+      "input_channels": 256,
+      "output_channels": 256
+    },
+    "vec1024": {
+      "family": "activation",
+      "m": 1,
+      "n": 1024,
+      "input_channels": 1024,
+      "output_channels": 1024
+    },
+    "batchnorm-8x8c16": {
+      "family": "batchnorm",
+      "height": 8,
+      "width": 8,
+      "input_channels": 16,
+      "output_channels": 16
+    },
+    "batchnorm-9x7c13": {
+      "family": "batchnorm",
+      "height": 7,
+      "width": 9,
+      "input_channels": 13,
+      "output_channels": 13
+    },
+    "batchnorm-16x16c32": {
+      "family": "batchnorm",
+      "height": 16,
+      "width": 16,
+      "input_channels": 32,
+      "output_channels": 32
+    },
+    "batchnorm-1x1c16": {
+      "family": "batchnorm",
+      "height": 1,
+      "width": 1,
+      "input_channels": 16,
+      "output_channels": 16
+    },
+    "pool2x2s2-16x16c16": {
+      "family": "pool",
+      "m": 8,
+      "n": 8,
+      "height": 16,
+      "width": 16,
+      "input_channels": 16,
+      "output_channels": 16,
+      "kernel_h": 2,
+      "kernel_w": 2,
+      "stride_h": 2,
+      "stride_w": 2
+    },
+    "pool3x3s2-9x7c13-pad1": {
+      "family": "pool",
+      "m": 4,
+      "n": 5,
+      "height": 7,
+      "width": 9,
+      "input_channels": 13,
+      "output_channels": 13,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 2,
+      "stride_w": 2,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "global_avgpool-9x7c16": {
+      "family": "pool",
+      "m": 1,
+      "n": 1,
+      "height": 7,
+      "width": 9,
+      "input_channels": 16,
+      "output_channels": 16,
+      "kernel_h": 7,
+      "kernel_w": 9,
+      "stride_h": 1,
+      "stride_w": 1
+    },
+    "global_avgpool-9x7c13": {
+      "family": "pool",
+      "m": 1,
+      "n": 1,
+      "height": 7,
+      "width": 9,
+      "input_channels": 13,
+      "output_channels": 13,
+      "kernel_h": 7,
+      "kernel_w": 9,
+      "stride_h": 1,
+      "stride_w": 1
+    },
+    "adaptive_avgpool-9x7c16-out4x3": {
+      "family": "pool",
+      "m": 3,
+      "n": 4,
+      "height": 7,
+      "width": 9,
+      "input_channels": 16,
+      "output_channels": 16,
+      "kernel_h": 0,
+      "kernel_w": 0,
+      "stride_h": 0,
+      "stride_w": 0
+    },
+    "adaptive_avgpool-9x7c13-out4x3": {
+      "family": "pool",
+      "m": 3,
+      "n": 4,
+      "height": 7,
+      "width": 9,
+      "input_channels": 13,
+      "output_channels": 13,
+      "kernel_h": 0,
+      "kernel_w": 0,
+      "stride_h": 0,
+      "stride_w": 0
+    },
+    "conv1x1-16x16c16to32": {
+      "family": "conv",
+      "height": 16,
+      "width": 16,
+      "input_channels": 16,
+      "output_channels": 32,
+      "kernel_h": 1,
+      "kernel_w": 1,
+      "stride_h": 1,
+      "stride_w": 1
+    },
+    "conv1x1-17x3c32to64": {
+      "family": "conv",
+      "height": 3,
+      "width": 17,
+      "input_channels": 32,
+      "output_channels": 64,
+      "kernel_h": 1,
+      "kernel_w": 1,
+      "stride_h": 1,
+      "stride_w": 1
+    },
+    "conv1x1-9x7c13to29": {
+      "family": "conv",
+      "height": 7,
+      "width": 9,
+      "input_channels": 13,
+      "output_channels": 29,
+      "kernel_h": 1,
+      "kernel_w": 1,
+      "stride_h": 1,
+      "stride_w": 1
+    },
+    "add-16x16c32": {
+      "family": "add",
+      "height": 16,
+      "width": 16,
+      "input_channels": 32,
+      "output_channels": 32
+    },
+    "add-17x3c32": {
+      "family": "add",
+      "height": 3,
+      "width": 17,
+      "input_channels": 32,
+      "output_channels": 32
+    },
+    "add-9x7c13": {
+      "family": "add",
+      "height": 7,
+      "width": 9,
+      "input_channels": 13,
+      "output_channels": 13
+    },
+    "conv3x3s2-40x24c1to8": {
+      "family": "conv",
+      "height": 24,
+      "width": 40,
+      "input_channels": 1,
+      "output_channels": 8,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 2,
+      "stride_w": 2,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "conv3x3s2-40x24c3to8": {
+      "family": "conv",
+      "height": 24,
+      "width": 40,
+      "input_channels": 3,
+      "output_channels": 8,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 2,
+      "stride_w": 2,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "conv3x3s2-40x24c4to8": {
+      "family": "conv",
+      "height": 24,
+      "width": 40,
+      "input_channels": 4,
+      "output_channels": 8,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 2,
+      "stride_w": 2,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "conv3x3s2-149x81c1to8": {
+      "family": "conv",
+      "height": 81,
+      "width": 149,
+      "input_channels": 1,
+      "output_channels": 8,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 2,
+      "stride_w": 2,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "conv3x3-20x12c32to32": {
+      "family": "conv",
+      "height": 12,
+      "width": 20,
+      "input_channels": 32,
+      "output_channels": 32,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 1,
+      "stride_w": 1,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "pool2x2s2-80x48c8": {
+      "family": "pool",
+      "m": 24,
+      "n": 40,
+      "height": 48,
+      "width": 80,
+      "input_channels": 8,
+      "output_channels": 8,
+      "kernel_h": 2,
+      "kernel_w": 2,
+      "stride_h": 2,
+      "stride_w": 2
+    },
+    "pool2x2s2-40x24c16": {
+      "family": "pool",
+      "m": 12,
+      "n": 20,
+      "height": 24,
+      "width": 40,
+      "input_channels": 16,
+      "output_channels": 16,
+      "kernel_h": 2,
+      "kernel_w": 2,
+      "stride_h": 2,
+      "stride_w": 2
+    },
+    "pool2x2s2-20x12c32": {
+      "family": "pool",
+      "m": 6,
+      "n": 10,
+      "height": 12,
+      "width": 20,
+      "input_channels": 32,
+      "output_channels": 32,
+      "kernel_h": 2,
+      "kernel_w": 2,
+      "stride_h": 2,
+      "stride_w": 2
+    },
+    "dw3x3-40x24c16": {
+      "family": "dw",
+      "height": 24,
+      "width": 40,
+      "input_channels": 16,
+      "output_channels": 16,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 1,
+      "stride_w": 1,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "dw3x3-20x12c32": {
+      "family": "dw",
+      "height": 12,
+      "width": 20,
+      "input_channels": 32,
+      "output_channels": 32,
+      "kernel_h": 3,
+      "kernel_w": 3,
+      "stride_h": 1,
+      "stride_w": 1,
+      "padding_top": 1,
+      "padding_bottom": 1,
+      "padding_left": 1,
+      "padding_right": 1
+    },
+    "matmul4x4-64to64": {
+      "family": "matmul",
+      "m": 4,
+      "n": 64,
+      "k": 64,
+      "input_channels": 64,
+      "output_channels": 64
+    },
+    "matmul4x4-144to32": {
+      "family": "matmul",
+      "m": 4,
+      "n": 32,
+      "k": 144,
+      "input_channels": 144,
+      "output_channels": 32
+    },
+    "matmul4x4-288to64": {
+      "family": "matmul",
+      "m": 4,
+      "n": 64,
+      "k": 288,
+      "input_channels": 288,
+      "output_channels": 64
+    },
+    "matmul4x4-63to13": {
+      "family": "matmul",
+      "m": 4,
+      "n": 13,
+      "k": 63,
+      "input_channels": 63,
+      "output_channels": 13
+    },
+    "matmul4x3-64to64": {
+      "family": "matmul",
+      "m": 3,
+      "n": 64,
+      "k": 64,
+      "input_channels": 64,
+      "output_channels": 64
+    },
+    "matmul4x3-144to32": {
+      "family": "matmul",
+      "m": 3,
+      "n": 32,
+      "k": 144,
+      "input_channels": 144,
+      "output_channels": 32
+    },
+    "matmul4x3-288to64": {
+      "family": "matmul",
+      "m": 3,
+      "n": 64,
+      "k": 288,
+      "input_channels": 288,
+      "output_channels": 64
+    },
+    "matmul4x3-63to13": {
+      "family": "matmul",
+      "m": 3,
+      "n": 13,
+      "k": 63,
+      "input_channels": 63,
+      "output_channels": 13
+    }
+  },
+  "outputs": {
+    "linear": {
+      "i32": {
+        "epilogue": "none",
+        "output_multiplier": 1,
+        "output_shift": 0
+      },
+      "u8shift": {
+        "epilogue": "u8shift",
+        "output_multiplier": 1,
+        "output_shift": 6
+      },
+      "u8requant": {
+        "epilogue": "u8requant",
+        "output_multiplier": 3,
+        "output_shift": 8
+      },
+      "u8bnfold": {
+        "epilogue": "u8bnfold",
+        "output_multiplier": 1,
+        "output_shift": 8
+      }
+    },
+    "matmul": {
+      "u8shift": {
+        "epilogue": "u8shift",
+        "output_multiplier": 1,
+        "output_shift": 6
+      },
+      "u8requant": {
+        "epilogue": "u8requant",
+        "output_multiplier": 3,
+        "output_shift": 8
+      },
+      "u8bnfold": {
+        "epilogue": "u8bnfold",
+        "output_multiplier": 1,
+        "output_shift": 8
+      }
+    },
+    "conv": {
+      "u8shift": {
+        "epilogue": "u8shift",
+        "output_multiplier": 1,
+        "output_shift": 6
+      },
+      "u8requant": {
+        "epilogue": "u8requant",
+        "output_multiplier": 3,
+        "output_shift": 8
+      },
+      "u8bnfold": {
+        "epilogue": "u8bnfold",
+        "output_multiplier": 1,
+        "output_shift": 8
+      }
+    },
+    "dw": {
+      "u8shift": {
+        "epilogue": "u8shift",
+        "output_multiplier": 1,
+        "output_shift": 6
+      },
+      "u8requant": {
+        "epilogue": "u8requant",
+        "output_multiplier": 3,
+        "output_shift": 8
+      },
+      "u8bnfold": {
+        "epilogue": "u8bnfold",
+        "output_multiplier": 1,
+        "output_shift": 8
+      }
+    },
+    "activation": {
+      "none": {
+        "epilogue": "none",
+        "output_multiplier": 1,
+        "output_shift": 0
+      }
+    },
+    "batchnorm": {
+      "none": {
+        "epilogue": "none",
+        "output_multiplier": 1,
+        "output_shift": 0
+      }
+    },
+    "pool": {
+      "u8": {
+        "epilogue": "none",
+        "output_multiplier": 1,
+        "output_shift": 0
+      },
+      "u8requant": {
+        "epilogue": "u8requant",
+        "output_multiplier": 3,
+        "output_shift": 1
+      }
+    },
+    "add": {
+      "add": {
+        "epilogue": "add",
+        "output_multiplier": 1,
+        "output_shift": 8
+      }
+    }
+  },
+  "suites": {
+    "linear_smoke": {
+      "axes": {
+        "shape": [
+          "linear-16to16"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "i32",
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "linear_i32_cores": {
+      "axes": {
+        "shape": [
+          "linear-12to256",
+          "linear-256to256",
+          "linear-256to4",
+          "linear-32to17",
+          "linear-64to64",
+          "linear-128to129"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          1,
+          2,
+          4,
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "linear_i32_shapes": {
+      "axes": {
+        "shape": [
+          "linear-12to256",
+          "linear-256to256",
+          "linear-256to4",
+          "linear-32to17",
+          "linear-64to64",
+          "linear-128to129"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "linear_i32_mlp_cores": {
+      "axes": {
+        "shape": [
+          "linear-12to256",
+          "linear-256to256"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          1,
+          2,
+          4,
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "linear_i32_kaligned": {
+      "axes": {
+        "shape": [
+          "linear-12to256",
+          "linear-64to64",
+          "linear-128to129",
+          "linear-256to256"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "linear_i32_tails": {
+      "axes": {
+        "shape": [
+          "linear-33to17",
+          "linear-65to64",
+          "linear-127to129",
+          "linear-255to256"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "linear_u8_outputs": {
+      "axes": {
+        "shape": [
+          "linear-12to256",
+          "linear-65to64",
+          "linear-127to129",
+          "linear-256to256"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8shift",
+          "u8requant",
+          "u8bnfold"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "matmul4x2_smoke": {
+      "axes": {
+        "shape": [
+          "matmul4x2-64to64",
+          "matmul4x2-63to13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "misalignment_offset_bytes": [
+          0
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "matmul4x2_offsets": {
+      "axes": {
+        "shape": [
+          "matmul4x2-64to64",
+          "matmul4x2-144to32",
+          "matmul4x2-288to64",
+          "matmul4x2-576to32",
+          "matmul4x2-63to13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "misalignment_offset_bytes": [
+          0,
+          4,
+          8,
+          12
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "matmul4x2_cores": {
+      "axes": {
+        "shape": [
+          "matmul4x2-288to64"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "misalignment_offset_bytes": [
+          0
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "matmul4x2_shapes": {
+      "axes": {
+        "shape": [
+          "matmul4x2-64to64",
+          "matmul4x2-288to64",
+          "matmul4x2-63to13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "misalignment_offset_bytes": [
+          0
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "matmul4x2_tail_once": {
+      "axes": {
+        "shape": [
+          "matmul4x2-63to13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "misalignment_offset_bytes": [
+          0
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 0,
+        "runs": 1,
+        "memory": "l1"
+      }
+    },
+    "conv3x3_smoke": {
+      "axes": {
+        "shape": [
+          "conv3x3-8x8c16to32",
+          "conv3x3-9x7c7to13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8requant",
+          "u8bnfold"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "conv3x3_outputs": {
+      "axes": {
+        "shape": [
+          "conv3x3-8x8c16to32",
+          "conv3x3-17x3c16to32",
+          "conv3x3s2-17x15c8to24",
+          "conv3x3-9x7c7to13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8shift",
+          "u8requant",
+          "u8bnfold"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "conv3x3_cores": {
+      "axes": {
+        "shape": [
+          "conv3x3-8x8c16to32",
+          "conv3x3-17x3c16to32"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "conv1x1_smoke": {
+      "axes": {
+        "shape": [
+          "conv1x1-16x16c16to32",
+          "conv1x1-9x7c13to29"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8requant",
+          "u8bnfold"
+        ]
+      },
+      "overrides": {
+        "warmups": 0,
+        "runs": 1,
+        "memory": "l2_direct"
+      }
+    },
+    "conv1x1_outputs": {
+      "axes": {
+        "shape": [
+          "conv1x1-16x16c16to32",
+          "conv1x1-17x3c32to64",
+          "conv1x1-9x7c13to29"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8shift",
+          "u8requant",
+          "u8bnfold"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "conv1x1_cores": {
+      "axes": {
+        "shape": [
+          "conv1x1-16x16c16to32",
+          "conv1x1-17x3c32to64",
+          "conv1x1-9x7c13to29"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "add_smoke": {
+      "axes": {
+        "shape": [
+          "add-16x16c32",
+          "add-9x7c13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "add"
+        ],
+        "input1_multiplier": [
+          3
+        ],
+        "input2_multiplier": [
+          5
+        ]
+      },
+      "overrides": {
+        "warmups": 0,
+        "runs": 1,
+        "memory": "l1"
+      }
+    },
+    "add_multipliers": {
+      "axes": {
+        "shape": [
+          "add-16x16c32",
+          "add-17x3c32",
+          "add-9x7c13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "add"
+        ],
+        "input1_multiplier": [
+          1,
+          3
+        ],
+        "input2_multiplier": [
+          1,
+          5
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "add_cores": {
+      "axes": {
+        "shape": [
+          "add-16x16c32",
+          "add-17x3c32"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "output": [
+          "add"
+        ],
+        "input1_multiplier": [
+          3
+        ],
+        "input2_multiplier": [
+          5
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "dw3x3_smoke": {
+      "axes": {
+        "shape": [
+          "dw3x3-16x16c32",
+          "dw3x3-9x7c13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8requant",
+          "u8bnfold"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "dw3x3_outputs": {
+      "axes": {
+        "shape": [
+          "dw3x3-16x16c32",
+          "dw3x3-17x3c16",
+          "dw3x3s2-17x15c24",
+          "dw3x3-9x7c13",
+          "dw3x3-9x7c7-padt0b2l1r0"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8shift",
+          "u8requant",
+          "u8bnfold"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "dw3x3_cores": {
+      "axes": {
+        "shape": [
+          "dw3x3-16x16c32",
+          "dw3x3-17x3c16"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "activation_smoke": {
+      "axes": {
+        "shape": [
+          "vec63"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "activation": [
+          "sigmoid",
+          "tanh",
+          "leaky_relu",
+          "hard_sigmoid",
+          "hard_swish",
+          "silu",
+          "gelu",
+          "softmax"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "activation_shapes": {
+      "axes": {
+        "shape": [
+          "vec16",
+          "vec63",
+          "vec256",
+          "vec1024"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "activation": [
+          "sigmoid",
+          "tanh",
+          "leaky_relu",
+          "hard_sigmoid",
+          "hard_swish",
+          "silu",
+          "gelu",
+          "softmax"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "activation_cores": {
+      "axes": {
+        "shape": [
+          "vec256"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "activation": [
+          "sigmoid",
+          "tanh",
+          "silu",
+          "gelu",
+          "softmax"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "batchnorm_smoke": {
+      "axes": {
+        "shape": [
+          "batchnorm-8x8c16",
+          "batchnorm-9x7c13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 0,
+        "runs": 1,
+        "memory": "l1"
+      }
+    },
+    "batchnorm_shapes": {
+      "axes": {
+        "shape": [
+          "batchnorm-8x8c16",
+          "batchnorm-9x7c13",
+          "batchnorm-16x16c32",
+          "batchnorm-1x1c16"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "batchnorm_cores": {
+      "axes": {
+        "shape": [
+          "batchnorm-16x16c32"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          1,
+          2,
+          4,
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "pool_smoke": {
+      "axes": {
+        "shape": [
+          "pool2x2s2-16x16c16",
+          "global_avgpool-9x7c16",
+          "adaptive_avgpool-9x7c16-out4x3"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 0,
+        "runs": 1,
+        "memory": "l1"
+      }
+    },
+    "pool_shapes": {
+      "axes": {
+        "shape": [
+          "pool2x2s2-16x16c16",
+          "pool3x3s2-9x7c13-pad1",
+          "global_avgpool-9x7c16",
+          "global_avgpool-9x7c13",
+          "adaptive_avgpool-9x7c16-out4x3",
+          "adaptive_avgpool-9x7c13-out4x3"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "pool_cores": {
+      "axes": {
+        "shape": [
+          "pool2x2s2-16x16c16",
+          "global_avgpool-9x7c16",
+          "adaptive_avgpool-9x7c16-out4x3"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          1,
+          2,
+          4,
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "pool_requant": {
+      "axes": {
+        "shape": [
+          "pool2x2s2-16x16c16",
+          "global_avgpool-9x7c16",
+          "adaptive_avgpool-9x7c16-out4x3"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "pool_requant_smoke": {
+      "axes": {
+        "shape": [
+          "adaptive_avgpool-9x7c16-out4x3"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 0,
+        "runs": 1,
+        "memory": "l1"
+      }
+    },
+    "linear_i32_tails_cores": {
+      "axes": {
+        "shape": [
+          "linear-16to16",
+          "linear-33to17",
+          "linear-65to64",
+          "linear-127to129"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          1,
+          2,
+          4,
+          8
+        ]
+      },
+      "overrides": {
+        "memory": "l2_direct",
+        "runs": 3,
+        "warmups": 1
+      }
+    },
+    "linear_i32_shapes_l1": {
+      "axes": {
+        "shape": [
+          "linear-12to256",
+          "linear-64to64",
+          "linear-128to129"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "conv3x3_shapes_l1": {
+      "axes": {
+        "shape": [
+          "conv3x3-8x8c16to32",
+          "conv3x3-17x3c16to32",
+          "conv3x3-9x7c7to13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "dw3x3_shapes_l1": {
+      "axes": {
+        "shape": [
+          "dw3x3-16x16c32",
+          "dw3x3-17x3c16",
+          "dw3x3-9x7c13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "conv3x3_stems": {
+      "axes": {
+        "shape": [
+          "conv3x3s2-40x24c1to8",
+          "conv3x3s2-40x24c3to8",
+          "conv3x3s2-40x24c4to8",
+          "conv3x3-8x8c16to32",
+          "conv3x3s2-149x81c1to8"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "conv3x3_dory_tiles": {
+      "axes": {
+        "shape": [
+          "conv3x3s2-149x81c1to8",
+          "conv3x3-20x12c32to32",
+          "conv3x3-8x8c16to32"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "pool_dory_tiles": {
+      "axes": {
+        "shape": [
+          "pool2x2s2-80x48c8",
+          "pool2x2s2-40x24c16",
+          "pool2x2s2-20x12c32",
+          "pool2x2s2-16x16c16"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "dw3x3_dory_tiles": {
+      "axes": {
+        "shape": [
+          "dw3x3-40x24c16",
+          "dw3x3-20x12c32",
+          "dw3x3-16x16c32"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l2_direct"
+      }
+    },
+    "conv3x3_stems_l1": {
+      "axes": {
+        "shape": [
+          "conv3x3s2-40x24c1to8",
+          "conv3x3s2-40x24c3to8",
+          "conv3x3s2-40x24c4to8"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "matmul4x4_shapes": {
+      "axes": {
+        "shape": [
+          "matmul4x4-64to64",
+          "matmul4x4-144to32",
+          "matmul4x4-288to64",
+          "matmul4x4-63to13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "misalignment_offset_bytes": [
+          0
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "matmul4x3_shapes": {
+      "axes": {
+        "shape": [
+          "matmul4x3-64to64",
+          "matmul4x3-144to32",
+          "matmul4x3-288to64",
+          "matmul4x3-63to13"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "misalignment_offset_bytes": [
+          0
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    },
+    "conv3x3_dory_tiles_l1": {
+      "axes": {
+        "shape": [
+          "conv3x3-20x12c32to32",
+          "conv3x3-8x8c16to32"
+        ],
+        "batch": [
+          1
+        ],
+        "cores": [
+          8
+        ],
+        "output": [
+          "u8requant"
+        ]
+      },
+      "overrides": {
+        "warmups": 1,
+        "runs": 3,
+        "memory": "l1"
+      }
+    }
+  },
+  "groups": {
+    "smoke": [
+      "linear_smoke",
+      "conv3x3_smoke",
+      "conv1x1_smoke",
+      "dw3x3_smoke",
+      "matmul4x2_smoke",
+      "matmul4x4_shapes",
+      "matmul4x3_shapes",
+      "activation_smoke",
+      "batchnorm_smoke",
+      "pool_smoke",
+      "pool_requant_smoke",
+      "add_smoke"
+    ]
+  }
+}

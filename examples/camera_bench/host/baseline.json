@@ -1,0 +1,585 @@
+{
+ "cases": {
+  "qqvga120-native-jpegcl-preview-tcp": {
+   "bitrate_kbps_avg": 1757.8879597173118,
+   "camera_fps_avg": 120.05,
+   "deck_capture_ms": {
+    "avg": 8.31320283215327,
+    "max": 9.0,
+    "min": 8.0,
+    "p50": 8.0,
+    "p95": 9.0
+   },
+   "deck_faulted": 0,
+   "deck_faults": {
+    "encode_failures": 0,
+    "spi_hard": 0,
+    "watchdog_restarts": 0
+   },
+   "deck_jpeg_ms": {
+    "avg": 1.007496876301541,
+    "max": 2.0,
+    "min": 1.0,
+    "p50": 1.0,
+    "p95": 1.0
+   },
+   "deck_preprocess_ms": {
+    "avg": 0.0,
+    "max": 0.0,
+    "min": 0.0,
+    "p50": 0.0,
+    "p95": 0.0
+   },
+   "deck_total_ms": {
+    "avg": 9.32069970845481,
+    "max": 10.0,
+    "min": 9.0,
+    "p50": 9.0,
+    "p95": 10.0
+   },
+   "drops": {
+    "capture": 0,
+    "ready": 0,
+    "while_sending": 0
+   },
+   "duration_s": 19.993265103,
+   "fps_1s": {
+    "avg": 120.08545805095085,
+    "max": 123.32208606691214,
+    "min": 116.89037349561254,
+    "p50": 120.06860852366324,
+    "p95": 120.63796055534662
+   },
+   "fps_avg": 120.04042299423514,
+   "frame_bytes": {
+    "avg": 1830.5401915868388,
+    "max": 1941.0,
+    "min": 1527.0,
+    "p50": 1883.0,
+    "p95": 1901.0
+   },
+   "frames": 2401,
+   "frames_lost_in_transit": 0,
+   "git": "6e46d67",
+   "interarrival_ms": {
+    "avg": 8.330527126249999,
+    "max": 35.2931529999978,
+    "min": 0.014818000067862158,
+    "p50": 8.314993999988474,
+    "p95": 11.975026600015322
+   },
+   "l2_free_min": 242728,
+   "l2_largest_min": 242728,
+   "link_jitter_ms": {
+    "avg": 6.748715250787728,
+    "max": 34.993311000056565,
+    "min": 0.0,
+    "p50": 6.724797000060789,
+    "p95": 11.32913800003007
+   },
+   "recorded": "2026-09-28T17:58:46",
+   "stack_camera_free_min": 107,
+   "stack_status_free_min": 317,
+   "stack_stream_free_min": 323,
+   "tx_free_min": 6
+  },
+  "qvga30-native-raw-exact-tcp": {
+   "bitrate_kbps_avg": 5822.232939228077,
+   "camera_fps_avg": 30.00201694231545,
+   "deck_capture_ms": {
+    "avg": 33.29100529100529,
+    "max": 34.0,
+    "min": 33.0,
+    "p50": 33.0,
+    "p95": 34.0
+   },
+   "deck_faulted": 0,
+   "deck_faults": {
+    "encode_failures": 0,
+    "spi_hard": 0,
+    "watchdog_restarts": 0
+   },
+   "deck_jpeg_ms": {
+    "avg": 0.0,
+    "max": 0.0,
+    "min": 0.0,
+    "p50": 0.0,
+    "p95": 0.0
+   },
+   "deck_preprocess_ms": {
+    "avg": 0.0,
+    "max": 0.0,
+    "min": 0.0,
+    "p50": 0.0,
+    "p95": 0.0
+   },
+   "deck_total_ms": {
+    "avg": 33.29100529100529,
+    "max": 34.0,
+    "min": 33.0,
+    "p50": 33.0,
+    "p95": 34.0
+   },
+   "drops": {
+    "capture": 0,
+    "ready": 0,
+    "while_sending": 407
+   },
+   "duration_s": 19.83898638300002,
+   "fps_1s": {
+    "avg": 9.478783117212581,
+    "max": 9.765122026282606,
+    "min": 8.900901327742943,
+    "p50": 9.499073541015505,
+    "p95": 9.641537964269977
+   },
+   "fps_avg": 9.476290591191532,
+   "frame_bytes": {
+    "avg": 76800.0,
+    "max": 76800.0,
+    "min": 76800.0,
+    "p50": 76800.0,
+    "p95": 76800.0
+   },
+   "frames": 189,
+   "frames_lost_in_transit": 0,
+   "git": "6e46d67",
+   "interarrival_ms": {
+    "avg": 105.52652331382988,
+    "max": 146.79712499992092,
+    "min": 92.08307300002616,
+    "p50": 104.70900700005359,
+    "p95": 112.42183125000338
+   },
+   "l2_free_min": 168616,
+   "l2_largest_min": 168616,
+   "link_jitter_ms": {
+    "avg": 28.989632280514805,
+    "max": 68.94432300014887,
+    "min": 0.0,
+    "p50": 28.964206000091508,
+    "p95": 46.99712020012084
+   },
+   "recorded": "2026-09-28T17:57:24",
+   "stack_camera_free_min": 139,
+   "stack_status_free_min": 337,
+   "stack_stream_free_min": 347,
+   "tx_free_min": 12
+  },
+  "qvga60-96crop-jpegcl-preview-tcp": {
+   "bitrate_kbps_avg": 550.9208436830444,
+   "camera_fps_avg": 59.535116220944765,
+   "deck_capture_ms": {
+    "avg": 16.776006711409394,
+    "max": 17.0,
+    "min": 16.0,
+    "p50": 17.0,
+    "p95": 17.0
+   },
+   "deck_faulted": 0,
+   "deck_faults": {
+    "encode_failures": 0,
+    "spi_hard": 0,
+    "watchdog_restarts": 0
+   },
+   "deck_jpeg_ms": {
+    "avg": 0.6040268456375839,
+    "max": 1.0,
+    "min": 0.0,
+    "p50": 1.0,
+    "p95": 1.0
+   },
+   "deck_preprocess_ms": {
+    "avg": 10.203859060402685,
+    "max": 11.0,
+    "min": 10.0,
+    "p50": 10.0,
+    "p95": 11.0
+   },
+   "deck_total_ms": {
+    "avg": 27.583892617449663,
+    "max": 29.0,
+    "min": 27.0,
+    "p50": 28.0,
+    "p95": 28.0
+   },
+   "drops": {
+    "capture": 0,
+    "ready": 0,
+    "while_sending": 0
+   },
+   "duration_s": 20.001102021000065,
+   "fps_1s": {
+    "avg": 59.55390943597648,
+    "max": 60.711717391812186,
+    "min": 58.51298574506263,
+    "p50": 59.54664703321272,
+    "p95": 59.845754790896414
+   },
+   "fps_avg": 59.54671891326363,
+   "frame_bytes": {
+    "avg": 1156.484899328859,
+    "max": 1172.0,
+    "min": 1140.0,
+    "p50": 1157.0,
+    "p95": 1166.0
+   },
+   "frames": 1192,
+   "frames_lost_in_transit": 0,
+   "git": "6e46d67",
+   "interarrival_ms": {
+    "avg": 16.793536541561767,
+    "max": 33.21444799996698,
+    "min": 0.5979149999575384,
+    "p50": 16.787071000067044,
+    "p95": 21.31206100000327
+   },
+   "l2_free_min": 229376,
+   "l2_largest_min": 229376,
+   "link_jitter_ms": {
+    "avg": 3.3590144480332684,
+    "max": 20.024063999997452,
+    "min": 0.0,
+    "p50": 2.9182390000787564,
+    "p95": 7.209768550068845
+   },
+   "recorded": "2026-09-28T18:00:10",
+   "stack_camera_free_min": 107,
+   "stack_status_free_min": 337,
+   "stack_stream_free_min": 325,
+   "tx_free_min": 7
+  },
+  "qvga60-native-jpegcl-exact-tcp": {
+   "bitrate_kbps_avg": 1824.7667063521437,
+   "camera_fps_avg": 59.5119023804761,
+   "deck_capture_ms": {
+    "avg": 16.78253568429891,
+    "max": 17.0,
+    "min": 16.0,
+    "p50": 17.0,
+    "p95": 17.0
+   },
+   "deck_faulted": 0,
+   "deck_faults": {
+    "encode_failures": 0,
+    "spi_hard": 0,
+    "watchdog_restarts": 0
+   },
+   "deck_jpeg_ms": {
+    "avg": 4.267002518891688,
+    "max": 5.0,
+    "min": 4.0,
+    "p50": 4.0,
+    "p95": 5.0
+   },
+   "deck_preprocess_ms": {
+    "avg": 0.0,
+    "max": 0.0,
+    "min": 0.0,
+    "p50": 0.0,
+    "p95": 0.0
+   },
+   "deck_total_ms": {
+    "avg": 21.049538203190597,
+    "max": 22.0,
+    "min": 20.0,
+    "p50": 21.0,
+    "p95": 22.0
+   },
+   "drops": {
+    "capture": 0,
+    "ready": 0,
+    "while_sending": 0
+   },
+   "duration_s": 19.997616064,
+   "fps_1s": {
+    "avg": 59.525206807966285,
+    "max": 61.78052384922896,
+    "min": 57.53611954818793,
+    "p50": 59.52270614386167,
+    "p95": 59.77546447045469
+   },
+   "fps_avg": 59.50709305506947,
+   "frame_bytes": {
+    "avg": 3833.1007556675063,
+    "max": 3873.0,
+    "min": 3793.0,
+    "p50": 3833.0,
+    "p95": 3852.0
+   },
+   "frames": 1191,
+   "frames_lost_in_transit": 0,
+   "git": "6e46d67",
+   "interarrival_ms": {
+    "avg": 16.804719381512605,
+    "max": 51.645932999974775,
+    "min": 0.8864730000368581,
+    "p50": 16.804727499987848,
+    "p95": 20.520033099984403
+   },
+   "l2_free_min": 17528,
+   "l2_largest_min": 17528,
+   "link_jitter_ms": {
+    "avg": 4.347848334214412,
+    "max": 39.188545000040904,
+    "min": 0.0,
+    "p50": 4.039556000032462,
+    "p95": 7.795213500066893
+   },
+   "recorded": "2026-09-28T17:54:37",
+   "stack_camera_free_min": 107,
+   "stack_status_free_min": 353,
+   "stack_stream_free_min": 323,
+   "tx_free_min": 92
+  },
+  "qvga60-native-jpegcl-preview-tcp": {
+   "bitrate_kbps_avg": 1793.140224757383,
+   "camera_fps_avg": 59.6059605960596,
+   "deck_capture_ms": {
+    "avg": 16.75859178541492,
+    "max": 17.0,
+    "min": 16.0,
+    "p50": 17.0,
+    "p95": 17.0
+   },
+   "deck_faulted": 0,
+   "deck_faults": {
+    "encode_failures": 0,
+    "spi_hard": 0,
+    "watchdog_restarts": 0
+   },
+   "deck_jpeg_ms": {
+    "avg": 4.248952221290863,
+    "max": 5.0,
+    "min": 4.0,
+    "p50": 4.0,
+    "p95": 5.0
+   },
+   "deck_preprocess_ms": {
+    "avg": 0.0,
+    "max": 0.0,
+    "min": 0.0,
+    "p50": 0.0,
+    "p95": 0.0
+   },
+   "deck_total_ms": {
+    "avg": 21.007544006705785,
+    "max": 22.0,
+    "min": 20.0,
+    "p50": 21.0,
+    "p95": 22.0
+   },
+   "drops": {
+    "capture": 0,
+    "ready": 0,
+    "while_sending": 0
+   },
+   "duration_s": 19.993827312000008,
+   "fps_1s": {
+    "avg": 59.62339259592054,
+    "max": 61.00397565907872,
+    "min": 58.54092068291198,
+    "p50": 59.61745569401053,
+    "p95": 59.84669364822289
+   },
+   "fps_avg": 59.61840028920219,
+   "frame_bytes": {
+    "avg": 3759.6119027661357,
+    "max": 3849.0,
+    "min": 3703.0,
+    "p50": 3751.0,
+    "p95": 3826.0
+   },
+   "frames": 1193,
+   "frames_lost_in_transit": 0,
+   "git": "6e46d67",
+   "interarrival_ms": {
+    "avg": 16.773345060402693,
+    "max": 39.24894099998255,
+    "min": 5.099541999982193,
+    "p50": 16.783398500024305,
+    "p95": 20.253070749970448
+   },
+   "l2_free_min": 185056,
+   "l2_largest_min": 185056,
+   "link_jitter_ms": {
+    "avg": 4.3964022363881305,
+    "max": 25.94921200000681,
+    "min": 0.0,
+    "p50": 4.2297010000329465,
+    "p95": 7.72866540004033
+   },
+   "recorded": "2026-09-28T17:53:11",
+   "stack_camera_free_min": 107,
+   "stack_status_free_min": 353,
+   "stack_stream_free_min": 323,
+   "tx_free_min": 4
+  },
+  "qvga60-native-jpegcl-preview-udp": {
+   "bitrate_kbps_avg": 1878.0320144726488,
+   "camera_fps_avg": 59.4732370433305,
+   "deck_capture_ms": {
+    "avg": 16.7973086627418,
+    "max": 17.0,
+    "min": 16.0,
+    "p50": 17.0,
+    "p95": 17.0
+   },
+   "deck_faulted": 0,
+   "deck_faults": {
+    "encode_failures": 0,
+    "spi_hard": 0,
+    "watchdog_restarts": 0
+   },
+   "deck_jpeg_ms": {
+    "avg": 4.33305298570227,
+    "max": 5.0,
+    "min": 4.0,
+    "p50": 4.0,
+    "p95": 5.0
+   },
+   "deck_preprocess_ms": {
+    "avg": 0.0,
+    "max": 0.0,
+    "min": 0.0,
+    "p50": 0.0,
+    "p95": 0.0
+   },
+   "deck_total_ms": {
+    "avg": 21.130361648444072,
+    "max": 22.0,
+    "min": 20.0,
+    "p50": 21.0,
+    "p95": 22.0
+   },
+   "drops": {
+    "capture": 0,
+    "ready": 0,
+    "while_sending": 0
+   },
+   "duration_s": 20.009392657000035,
+   "fps_1s": {
+    "avg": 59.395923511732136,
+    "max": 60.73106630437508,
+    "min": 57.21439114053071,
+    "p50": 59.478328944452684,
+    "p95": 59.73758451398211
+   },
+   "fps_avg": 59.37211690352796,
+   "frame_bytes": {
+    "avg": 3953.9243061396132,
+    "max": 3996.0,
+    "min": 3911.0,
+    "p50": 3954.0,
+    "p95": 3974.0
+   },
+   "frames": 1189,
+   "frames_lost_in_transit": 2,
+   "git": "6e46d67",
+   "interarrival_ms": {
+    "avg": 16.84292311195289,
+    "max": 43.30151399994975,
+    "min": 0.06886799997118942,
+    "p50": 16.81149949996552,
+    "p95": 21.1556008499997
+   },
+   "l2_free_min": 185056,
+   "l2_largest_min": 185056,
+   "link_jitter_ms": {
+    "avg": 2.880147756138445,
+    "max": 29.784175000037067,
+    "min": 0.0,
+    "p50": 2.4321639999980107,
+    "p95": 6.755038600065736
+   },
+   "recorded": "2026-09-28T18:01:34",
+   "stack_camera_free_min": 107,
+   "stack_status_free_min": 317,
+   "stack_stream_free_min": 323,
+   "tx_free_min": 4
+  },
+  "qvga60-native-jpegfc-preview-tcp": {
+   "bitrate_kbps_avg": 402.998069391921,
+   "camera_fps_avg": 59.50105623176742,
+   "deck_capture_ms": {
+    "avg": 16.816091954022987,
+    "max": 17.0,
+    "min": 16.0,
+    "p50": 17.0,
+    "p95": 17.0
+   },
+   "deck_faulted": 0,
+   "deck_faults": {
+    "encode_failures": 0,
+    "spi_hard": 0,
+    "watchdog_restarts": 0
+   },
+   "deck_jpeg_ms": {
+    "avg": 75.95019157088123,
+    "max": 77.0,
+    "min": 75.0,
+    "p50": 76.0,
+    "p95": 77.0
+   },
+   "deck_preprocess_ms": {
+    "avg": 0.0,
+    "max": 0.0,
+    "min": 0.0,
+    "p50": 0.0,
+    "p95": 0.0
+   },
+   "deck_total_ms": {
+    "avg": 92.76628352490421,
+    "max": 94.0,
+    "min": 91.0,
+    "p50": 93.0,
+    "p95": 94.0
+   },
+   "drops": {
+    "capture": 0,
+    "ready": 0,
+    "while_sending": 0
+   },
+   "duration_s": 19.880432708,
+   "fps_1s": {
+    "avg": 13.0804113248568,
+    "max": 13.218631633222987,
+    "min": 12.90601282522716,
+    "p50": 13.077880300927177,
+    "p95": 13.138679177454193
+   },
+   "fps_avg": 13.078186165202254,
+   "frame_bytes": {
+    "avg": 3851.896551724138,
+    "max": 3889.0,
+    "min": 3818.0,
+    "p50": 3851.0,
+    "p95": 3876.0
+   },
+   "frames": 261,
+   "frames_lost_in_transit": 0,
+   "git": "6e46d67",
+   "interarrival_ms": {
+    "avg": 76.46320272307692,
+    "max": 85.79770000000053,
+    "min": 67.37873800000216,
+    "p50": 76.4258135000091,
+    "p95": 82.26197664996278
+   },
+   "l2_free_min": 251816,
+   "l2_largest_min": 251816,
+   "link_jitter_ms": {
+    "avg": 12.275754436756435,
+    "max": 26.106685999955516,
+    "min": 0.0,
+    "p50": 12.59474999998929,
+    "p95": 20.283425999979954
+   },
+   "recorded": "2026-09-28T17:56:01",
+   "stack_camera_free_min": 123,
+   "stack_status_free_min": 353,
+   "stack_stream_free_min": 151,
+   "tx_free_min": 4
+  }
+ }
+}

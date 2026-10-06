@@ -1,0 +1,42 @@
+# Default (stock) Crazyflie firmware for the mocap waypoint demo.
+#
+# This flashes NO out-of-tree controller: the built-in PID controller tracks the
+# absolute position setpoints the host streams. Because the drone is mocap-fused
+# (external pose into the Kalman estimator), z comes from mocap, not the
+# barometer - so the plain PID controller is used (no baro z-hold).
+
+# Build for the Crazyflie 2.1 Brushless: the cf21bl platform, not the default cf2.
+# CONFIG_PLATFORM_CF2 is not set
+CONFIG_PLATFORM_CF21BL=y
+CONFIG_THRUST_BAT_COMPENSATION_MAX_THRUST=200
+# CONFIG_MODIFY_CF_MASS is not set
+
+# No out-of-tree app or controller: use the built-in stabilizer + estimators.
+# CONFIG_APP_ENABLE is not set
+# CONFIG_CONTROLLER_OOT is not set
+CONFIG_CONTROLLER_PID=y
+
+CONFIG_MOTORS_REQUIRE_ARMING=y
+CONFIG_MOTORS_ESC_PROTOCOL_DSHOT=y
+# CONFIG_MOTORS_DSHOT_PWM_150KHZ is not set
+CONFIG_MOTORS_DSHOT_PWM_300KHZ=y
+# CONFIG_MOTORS_DSHOT_PWM_600KHZ is not set
+CONFIG_MOTORS_ESC_PROTOCOL_DSHOT_BIDIRECTIONAL=y
+CONFIG_MOTORS_NBR_OF_POLES=12
+# Firmware default (7000): keep the props spinning at a stable idle once armed so
+# they spool up symmetrically before takeoff, rather than starting from a dead stop.
+CONFIG_MOTORS_DEFAULT_IDLE_THRUST=7000
+CONFIG_MOTORS_DEFAULT_PROP_TEST_PWM_RATIO=0
+CONFIG_MOTORS_DEFAULT_BAT_TEST_PWM_RATIO=0
+CONFIG_POWER_DISTRIBUTION_QUADROTOR=y
+# CONFIG_LOG_MOTOR_CAP_WARNING is not set
+
+# Radio downlink buffers: more log blocks and variables, and a longer CRTP transmit
+# queue to absorb telemetry bursts (options added by cf-lab's firmware).
+CONFIG_CRTP_TX_QUEUE_SIZE=400
+CONFIG_LOG_MAX_BLOCKS=32
+CONFIG_LOG_MAX_OPS=255
+
+# Drop a radio packet on a full queue or bad checksum instead of asserting, which
+# reboots the drone and cuts the motors mid-flight.
+# CONFIG_RADIO_ASSERT_ON_COM_PROBLEM is not set

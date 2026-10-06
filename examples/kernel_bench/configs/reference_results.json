@@ -1,0 +1,897 @@
+{
+  "cases": {
+    "adaptive_avgpool-9x7c16-out4x3-u8-l1-8core": {
+      "adaptive_avgpool_u8/channel4": {
+        "expected_checksum": 3567910446,
+        "status": "pass"
+      },
+      "adaptive_avgpool_u8/scalar": {
+        "expected_checksum": 3567910446,
+        "status": "pass"
+      }
+    },
+    "adaptive_avgpool-9x7c16-out4x3-u8-l1-8core-once": {
+      "adaptive_avgpool_u8/channel4": {
+        "expected_checksum": 3567910446,
+        "status": "pass"
+      },
+      "adaptive_avgpool_u8/scalar": {
+        "expected_checksum": 3567910446,
+        "status": "pass"
+      }
+    },
+    "adaptive_avgpool-9x7c16-out4x3-u8requant-l1-8core": {
+      "adaptive_avgpool_u8/channel4": {
+        "expected_checksum": 3497802063,
+        "status": "pass"
+      },
+      "adaptive_avgpool_u8/scalar": {
+        "expected_checksum": 3497802063,
+        "status": "pass"
+      }
+    },
+    "adaptive_avgpool-9x7c16-out4x3-u8requant-l1-8core-once": {
+      "adaptive_avgpool_u8/channel4": {
+        "expected_checksum": 3497802063,
+        "status": "pass"
+      },
+      "adaptive_avgpool_u8/scalar": {
+        "expected_checksum": 3497802063,
+        "status": "pass"
+      }
+    },
+    "add-16x16c32-m3m5-l1-8core": {
+      "add_u8_u8_u8/packed4_flattened": {
+        "expected_checksum": 85548101,
+        "status": "pass"
+      },
+      "add_u8_u8_u8/pulp_nn": {
+        "expected_checksum": 85548101,
+        "status": "pass"
+      }
+    },
+    "add-16x16c32-m3m5-l1-8core-once": {
+      "add_u8_u8_u8/packed4_flattened": {
+        "expected_checksum": 85548101,
+        "status": "pass"
+      },
+      "add_u8_u8_u8/pulp_nn": {
+        "expected_checksum": 85548101,
+        "status": "pass"
+      }
+    },
+    "add-9x7c13-m3m5-l1-8core-once": {
+      "add_u8_u8_u8/packed4_flattened": {
+        "expected_checksum": 1372147829,
+        "status": "pass"
+      },
+      "add_u8_u8_u8/pulp_nn": {
+        "expected_checksum": 1372147829,
+        "status": "pass"
+      }
+    },
+    "batchnorm-8x8c16-l1-8core": {
+      "batchnorm_fixed_u8/channel4": {
+        "expected_checksum": 2617368206,
+        "status": "pass"
+      },
+      "batchnorm_fixed_u8/scalar": {
+        "expected_checksum": 2617368206,
+        "status": "pass"
+      },
+      "batchnorm_update_u8/channel": {
+        "expected_checksum": 127092438,
+        "status": "pass"
+      }
+    },
+    "batchnorm-8x8c16-l1-8core-once": {
+      "batchnorm_fixed_u8/channel4": {
+        "expected_checksum": 2617368206,
+        "status": "pass"
+      },
+      "batchnorm_fixed_u8/scalar": {
+        "expected_checksum": 2617368206,
+        "status": "pass"
+      },
+      "batchnorm_update_u8/channel": {
+        "expected_checksum": 127092438,
+        "status": "pass"
+      }
+    },
+    "batchnorm-9x7c13-l1-8core": {
+      "batchnorm_fixed_u8/scalar": {
+        "expected_checksum": 2651063824,
+        "status": "pass"
+      },
+      "batchnorm_update_u8/channel": {
+        "expected_checksum": 3115071971,
+        "status": "pass"
+      }
+    },
+    "batchnorm-9x7c13-l1-8core-once": {
+      "batchnorm_fixed_u8/scalar": {
+        "expected_checksum": 2651063824,
+        "status": "pass"
+      },
+      "batchnorm_update_u8/channel": {
+        "expected_checksum": 3115071971,
+        "status": "pass"
+      }
+    },
+    "conv1x1-16x16c16to32-u8bnfold-l2_direct-8core": {
+      "conv2d_u8s8_u8/pointwise_flattened4x2": {
+        "expected_checksum": 4028561605,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pointwise_pulp_nn": {
+        "expected_checksum": 4028561605,
+        "status": "pass"
+      }
+    },
+    "conv1x1-16x16c16to32-u8bnfold-l2_direct-8core-once": {
+      "conv2d_u8s8_u8/pointwise_flattened4x2": {
+        "expected_checksum": 4028561605,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pointwise_pulp_nn": {
+        "expected_checksum": 4028561605,
+        "status": "pass"
+      }
+    },
+    "conv1x1-16x16c16to32-u8requant-l2_direct-8core": {
+      "conv2d_u8s8_u8/pointwise_flattened4x2": {
+        "expected_checksum": 2464895429,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pointwise_pulp_nn": {
+        "expected_checksum": 2464895429,
+        "status": "pass"
+      }
+    },
+    "conv1x1-16x16c16to32-u8requant-l2_direct-8core-once": {
+      "conv2d_u8s8_u8/pointwise_flattened4x2": {
+        "expected_checksum": 2464895429,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pointwise_pulp_nn": {
+        "expected_checksum": 2464895429,
+        "status": "pass"
+      }
+    },
+    "conv1x1-9x7c13to29-u8bnfold-l2_direct-8core": {
+      "conv2d_u8s8_u8/pointwise_flattened4x2": {
+        "expected_checksum": 1085478937,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pointwise_pulp_nn": {
+        "expected_checksum": 1085478937,
+        "status": "pass"
+      }
+    },
+    "conv1x1-9x7c13to29-u8bnfold-l2_direct-8core-once": {
+      "conv2d_u8s8_u8/pointwise_flattened4x2": {
+        "expected_checksum": 1085478937,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pointwise_pulp_nn": {
+        "expected_checksum": 1085478937,
+        "status": "pass"
+      }
+    },
+    "conv1x1-9x7c13to29-u8requant-l2_direct-8core": {
+      "conv2d_u8s8_u8/pointwise_flattened4x2": {
+        "expected_checksum": 3843978640,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pointwise_pulp_nn": {
+        "expected_checksum": 3843978640,
+        "status": "pass"
+      }
+    },
+    "conv1x1-9x7c13to29-u8requant-l2_direct-8core-once": {
+      "conv2d_u8s8_u8/pointwise_flattened4x2": {
+        "expected_checksum": 3843978640,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pointwise_pulp_nn": {
+        "expected_checksum": 3843978640,
+        "status": "pass"
+      }
+    },
+    "conv3x3-17x3c16to32-u8bnfold-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 2118066095,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 2118066095,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 2118066095,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 2118066095,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 2118066095,
+        "status": "pass"
+      }
+    },
+    "conv3x3-17x3c16to32-u8requant-l1-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 1436501421,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 1436501421,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 1436501421,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 1436501421,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 1436501421,
+        "status": "pass"
+      }
+    },
+    "conv3x3-17x3c16to32-u8requant-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 1436501421,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 1436501421,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 1436501421,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 1436501421,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 1436501421,
+        "status": "pass"
+      }
+    },
+    "conv3x3-17x3c16to32-u8shift-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 3019820579,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 3019820579,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 3019820579,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 3019820579,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 3019820579,
+        "status": "pass"
+      }
+    },
+    "conv3x3-20x12c32to32-u8requant-l1-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 2275768579,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 2275768579,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 2275768579,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 2275768579,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 2275768579,
+        "status": "pass"
+      }
+    },
+    "conv3x3-20x12c32to32-u8requant-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 2275768579,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 2275768579,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 2275768579,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 2275768579,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 2275768579,
+        "status": "pass"
+      }
+    },
+    "conv3x3-8x8c16to32-u8bnfold-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 1216096525,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 1216096525,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 1216096525,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 1216096525,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 1216096525,
+        "status": "pass"
+      }
+    },
+    "conv3x3-8x8c16to32-u8requant-l1-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 4045048554,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 4045048554,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 4045048554,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 4045048554,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 4045048554,
+        "status": "pass"
+      }
+    },
+    "conv3x3-8x8c16to32-u8requant-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 4045048554,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 4045048554,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 4045048554,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 4045048554,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 4045048554,
+        "status": "pass"
+      }
+    },
+    "conv3x3-8x8c16to32-u8shift-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 2348007268,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 2348007268,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 2348007268,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 2348007268,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 2348007268,
+        "status": "pass"
+      }
+    },
+    "conv3x3-9x7c7to13-u8bnfold-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 386197156,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 386197156,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 386197156,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 386197156,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 386197156,
+        "status": "pass"
+      }
+    },
+    "conv3x3-9x7c7to13-u8requant-l1-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 184394344,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 184394344,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 184394344,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 184394344,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 184394344,
+        "status": "pass"
+      }
+    },
+    "conv3x3-9x7c7to13-u8requant-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 184394344,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 184394344,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 184394344,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 184394344,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 184394344,
+        "status": "pass"
+      }
+    },
+    "conv3x3-9x7c7to13-u8shift-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 1004745129,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 1004745129,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 1004745129,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 1004745129,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 1004745129,
+        "status": "pass"
+      }
+    },
+    "conv3x3s2-149x81c1to8-u8requant-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 1807554536,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 1807554536,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 1807554536,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 1807554536,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_direct3x3": {
+        "expected_checksum": 1807554536,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 1807554536,
+        "status": "pass"
+      }
+    },
+    "conv3x3s2-17x15c8to24-u8bnfold-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 2070021218,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 2070021218,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 2070021218,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 2070021218,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 2070021218,
+        "status": "pass"
+      }
+    },
+    "conv3x3s2-17x15c8to24-u8requant-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 1614417963,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 1614417963,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 1614417963,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 1614417963,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 1614417963,
+        "status": "pass"
+      }
+    },
+    "conv3x3s2-17x15c8to24-u8shift-l2_direct-8core": {
+      "conv2d_u8s8_u8/flattened_matmul4x2": {
+        "expected_checksum": 3224826730,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/flattened_matmul4x3": {
+        "expected_checksum": 3224826730,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/matmul4x2": {
+        "expected_checksum": 3224826730,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 3224826730,
+        "status": "pass"
+      },
+      "conv2d_u8s8_u8/stem_repack4": {
+        "expected_checksum": 3224826730,
+        "status": "pass"
+      }
+    },
+    "dw3x3-16x16c32-u8bnfold-l2_direct-8core": {
+      "depthwise_conv2d_u8s8_u8/channel4": {
+        "expected_checksum": 2493267540,
+        "status": "pass"
+      },
+      "depthwise_conv2d_u8s8_u8/direct3x3_2x1": {
+        "expected_checksum": 2493267540,
+        "status": "pass"
+      },
+      "depthwise_conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 2493267540,
+        "status": "pass"
+      }
+    },
+    "dw3x3-16x16c32-u8requant-l2_direct-8core": {
+      "depthwise_conv2d_u8s8_u8/channel4": {
+        "expected_checksum": 3323630727,
+        "status": "pass"
+      },
+      "depthwise_conv2d_u8s8_u8/direct3x3_2x1": {
+        "expected_checksum": 3323630727,
+        "status": "pass"
+      },
+      "depthwise_conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 3323630727,
+        "status": "pass"
+      }
+    },
+    "dw3x3-9x7c13-u8bnfold-l2_direct-8core": {
+      "depthwise_conv2d_u8s8_u8/direct3x3_2x1": {
+        "expected_checksum": 245263546,
+        "status": "pass"
+      },
+      "depthwise_conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 245263546,
+        "status": "pass"
+      }
+    },
+    "dw3x3-9x7c13-u8requant-l2_direct-8core": {
+      "depthwise_conv2d_u8s8_u8/direct3x3_2x1": {
+        "expected_checksum": 2354310711,
+        "status": "pass"
+      },
+      "depthwise_conv2d_u8s8_u8/pulp_nn": {
+        "expected_checksum": 2354310711,
+        "status": "pass"
+      }
+    },
+    "gelu-vec63-l1-8core": {
+      "activation_lut8/packed4": {
+        "expected_checksum": 3241730353,
+        "status": "pass"
+      },
+      "activation_lut8/scalar": {
+        "expected_checksum": 3241730353,
+        "status": "pass"
+      }
+    },
+    "global_avgpool-9x7c16-u8-l1-8core": {
+      "global_avgpool_u8/channel": {
+        "expected_checksum": 806189675,
+        "status": "pass"
+      },
+      "global_avgpool_u8/pulp_nn": {
+        "expected_checksum": 806189675,
+        "status": "pass"
+      }
+    },
+    "global_avgpool-9x7c16-u8-l1-8core-once": {
+      "global_avgpool_u8/channel": {
+        "expected_checksum": 806189675,
+        "status": "pass"
+      },
+      "global_avgpool_u8/pulp_nn": {
+        "expected_checksum": 806189675,
+        "status": "pass"
+      }
+    },
+    "hard_sigmoid-vec63-l1-8core": {
+      "activation_lut8/packed4": {
+        "expected_checksum": 4023909373,
+        "status": "pass"
+      },
+      "activation_lut8/scalar": {
+        "expected_checksum": 4023909373,
+        "status": "pass"
+      }
+    },
+    "hard_swish-vec63-l1-8core": {
+      "activation_lut8/packed4": {
+        "expected_checksum": 1076247692,
+        "status": "pass"
+      },
+      "activation_lut8/scalar": {
+        "expected_checksum": 1076247692,
+        "status": "pass"
+      }
+    },
+    "leaky_relu-vec63-l1-8core": {
+      "activation_lut8/packed4": {
+        "expected_checksum": 2422672319,
+        "status": "pass"
+      },
+      "activation_lut8/scalar": {
+        "expected_checksum": 2422672319,
+        "status": "pass"
+      }
+    },
+    "linear-16to16-i32-l2_direct-8core": {
+      "linear_u8s8_i32/pulp_nn": {
+        "expected_checksum": 1095493060,
+        "status": "pass"
+      },
+      "linear_u8s8_i32/register4": {
+        "expected_checksum": 1095493060,
+        "status": "pass"
+      },
+      "linear_u8s8_i32/register4_unroll2": {
+        "expected_checksum": 1095493060,
+        "status": "pass"
+      }
+    },
+    "linear-16to16-u8requant-l2_direct-8core": {
+      "linear_u8s8_u8/pulp_nn": {
+        "expected_checksum": 2119527265,
+        "status": "pass"
+      },
+      "linear_u8s8_u8/register4_fused": {
+        "expected_checksum": 2119527265,
+        "status": "pass"
+      }
+    },
+    "matmul4x2-63to13-off0-u8requant-l1-8core": {
+      "matmul4x2_u8s8_u8/krotate": {
+        "expected_checksum": 3966273579,
+        "status": "pass"
+      },
+      "matmul4x2_u8s8_u8/pulp_nn": {
+        "expected_checksum": 3966273579,
+        "status": "pass"
+      },
+      "matmul4x2_u8s8_u8/sequential": {
+        "expected_checksum": 3966273579,
+        "status": "pass"
+      }
+    },
+    "matmul4x2-63to13-off0-u8requant-l1-8core-once": {
+      "matmul4x2_u8s8_u8/krotate": {
+        "expected_checksum": 3966273579,
+        "status": "pass"
+      },
+      "matmul4x2_u8s8_u8/pulp_nn": {
+        "expected_checksum": 3966273579,
+        "status": "pass"
+      },
+      "matmul4x2_u8s8_u8/sequential": {
+        "expected_checksum": 3966273579,
+        "status": "pass"
+      }
+    },
+    "matmul4x2-64to64-off0-u8requant-l1-8core": {
+      "matmul4x2_u8s8_u8/krotate": {
+        "expected_checksum": 4197178341,
+        "status": "pass"
+      },
+      "matmul4x2_u8s8_u8/pulp_nn": {
+        "expected_checksum": 4197178341,
+        "status": "pass"
+      },
+      "matmul4x2_u8s8_u8/sequential": {
+        "expected_checksum": 4197178341,
+        "status": "pass"
+      }
+    },
+    "matmul4x3-144to32-off0-u8requant-l1-8core": {
+      "matmul4x3_u8s8_u8/sequential": {
+        "expected_checksum": 3028436917,
+        "status": "pass"
+      }
+    },
+    "matmul4x3-288to64-off0-u8requant-l1-8core": {
+      "matmul4x3_u8s8_u8/sequential": {
+        "expected_checksum": 2519998197,
+        "status": "pass"
+      }
+    },
+    "matmul4x3-63to13-off0-u8requant-l1-8core": {
+      "matmul4x3_u8s8_u8/sequential": {
+        "expected_checksum": 2736457611,
+        "status": "pass"
+      }
+    },
+    "matmul4x3-64to64-off0-u8requant-l1-8core": {
+      "matmul4x3_u8s8_u8/sequential": {
+        "expected_checksum": 573979381,
+        "status": "pass"
+      }
+    },
+    "matmul4x4-144to32-off0-u8requant-l1-8core": {
+      "matmul4x4_u8s8_u8/sequential": {
+        "expected_checksum": 504493701,
+        "status": "pass"
+      }
+    },
+    "matmul4x4-288to64-off0-u8requant-l1-8core": {
+      "matmul4x4_u8s8_u8/sequential": {
+        "expected_checksum": 3180656901,
+        "status": "pass"
+      }
+    },
+    "matmul4x4-63to13-off0-u8requant-l1-8core": {
+      "matmul4x4_u8s8_u8/sequential": {
+        "expected_checksum": 4101625341,
+        "status": "pass"
+      }
+    },
+    "matmul4x4-64to64-off0-u8requant-l1-8core": {
+      "matmul4x4_u8s8_u8/sequential": {
+        "expected_checksum": 1106057733,
+        "status": "pass"
+      }
+    },
+    "pool2x2s2-16x16c16-u8-l1-8core": {
+      "avgpool2d_u8/channel4": {
+        "expected_checksum": 3046121345,
+        "status": "pass"
+      },
+      "avgpool2d_u8/pulp_nn": {
+        "expected_checksum": 3046121345,
+        "status": "pass"
+      },
+      "maxpool2d_u8/channel4": {
+        "expected_checksum": 3521584085,
+        "status": "pass"
+      },
+      "maxpool2d_u8/pulp_nn": {
+        "expected_checksum": 3521584085,
+        "status": "pass"
+      }
+    },
+    "pool2x2s2-16x16c16-u8-l1-8core-once": {
+      "avgpool2d_u8/channel4": {
+        "expected_checksum": 3046121345,
+        "status": "pass"
+      },
+      "avgpool2d_u8/pulp_nn": {
+        "expected_checksum": 3046121345,
+        "status": "pass"
+      },
+      "maxpool2d_u8/channel4": {
+        "expected_checksum": 3521584085,
+        "status": "pass"
+      },
+      "maxpool2d_u8/pulp_nn": {
+        "expected_checksum": 3521584085,
+        "status": "pass"
+      }
+    },
+    "sigmoid-vec63-l1-8core": {
+      "activation_lut8/packed4": {
+        "expected_checksum": 1785166749,
+        "status": "pass"
+      },
+      "activation_lut8/scalar": {
+        "expected_checksum": 1785166749,
+        "status": "pass"
+      }
+    },
+    "silu-vec63-l1-8core": {
+      "activation_lut8/packed4": {
+        "expected_checksum": 3319726920,
+        "status": "pass"
+      },
+      "activation_lut8/scalar": {
+        "expected_checksum": 3319726920,
+        "status": "pass"
+      }
+    },
+    "softmax-vec63-l1-8core": {
+      "softmax_s8_u8/scalar": {
+        "expected_checksum": 851971366,
+        "status": "pass"
+      }
+    },
+    "tanh-vec63-l1-8core": {
+      "activation_lut8/packed4": {
+        "expected_checksum": 1588738484,
+        "status": "pass"
+      },
+      "activation_lut8/scalar": {
+        "expected_checksum": 1588738484,
+        "status": "pass"
+      }
+    }
+  },
+  "schema_version": 1
+}

@@ -1,0 +1,11 @@
+# Build for the Crazyflie 2.1 Brushless: the cf21bl platform, as the firmware's
+# configs/cf21bl_defconfig does, not the default cf2.
+# CONFIG_PLATFORM_CF2 is not set
+CONFIG_PLATFORM_CF21BL=y
+CONFIG_MOTORS_REQUIRE_ARMING=y
+CONFIG_MOTORS_ESC_PROTOCOL_DSHOT=y
+
+CONFIG_CONTROLLER_OOT=y
+# Drop a radio packet on a full queue or bad checksum instead of asserting, which
+# reboots the drone and cuts the motors mid-flight.
+# CONFIG_RADIO_ASSERT_ON_COM_PROBLEM is not set

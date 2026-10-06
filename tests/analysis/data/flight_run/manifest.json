@@ -1,0 +1,140 @@
+{
+ "format_version": 1,
+ "created_wall_ns": 1784326431422077783,
+ "created_monotonic_ns": 9152159111013,
+ "closed_wall_ns": 1784326464789214391,
+ "status": "clean",
+ "error": null,
+ "empty_streams": [],
+ "example": "mocap_waypoint",
+ "git_sha": "702bce7a1caaf3396e9274caeb46449e4c0b2094",
+ "streams": {
+  "state_pos": {
+   "file": "state_pos.parquet",
+   "fields": [
+    "seq",
+    "host_ns",
+    "stm32_ms",
+    "stateEstimate.x",
+    "stateEstimate.y",
+    "stateEstimate.z",
+    "stateEstimate.vx",
+    "stateEstimate.vy",
+    "stateEstimate.vz"
+   ],
+   "clock": "stm32_ms",
+   "rows": 2497,
+   "dropped": 0,
+   "meta": {
+    "log_var": "stateEstimate.vz:float",
+    "period_ms": "10"
+   }
+  },
+  "state_att": {
+   "file": "state_att.parquet",
+   "fields": [
+    "seq",
+    "host_ns",
+    "stm32_ms",
+    "stateEstimate.roll",
+    "stateEstimate.pitch",
+    "stateEstimate.yaw",
+    "gyro.x",
+    "gyro.y",
+    "gyro.z"
+   ],
+   "clock": "stm32_ms",
+   "rows": 2497,
+   "dropped": 0,
+   "meta": {
+    "log_var": "gyro.z:float",
+    "period_ms": "10"
+   }
+  },
+  "ctrl": {
+   "file": "ctrl.parquet",
+   "fields": [
+    "seq",
+    "host_ns",
+    "stm32_ms",
+    "controller.cmd_thrust",
+    "controller.cmd_roll",
+    "controller.cmd_pitch",
+    "controller.cmd_yaw"
+   ],
+   "clock": "stm32_ms",
+   "rows": 2496,
+   "dropped": 0,
+   "meta": {
+    "log_var": "controller.cmd_yaw:float",
+    "period_ms": "10",
+    "control_stage": "pre_mixer",
+    "control_mode": "legacy",
+    "units": "firmware mixer commands"
+   }
+  },
+  "extpose": {
+   "file": "extpose.parquet",
+   "fields": [
+    "seq",
+    "host_ns",
+    "source_ts_s",
+    "source_seq",
+    "x",
+    "y",
+    "z"
+   ],
+   "clock": "none",
+   "rows": 2692,
+   "dropped": 0,
+   "meta": {
+    "frame": "origin-zeroed, as sent to the estimator"
+   }
+  },
+  "setpoints": {
+   "file": "setpoints.parquet",
+   "fields": [
+    "seq",
+    "host_ns",
+    "x",
+    "y",
+    "z",
+    "yaw_deg"
+   ],
+   "clock": "none",
+   "rows": 1371,
+   "dropped": 0,
+   "meta": {}
+  },
+  "events": {
+   "file": "events.parquet",
+   "fields": [
+    "seq",
+    "host_ns",
+    "kind",
+    "message",
+    "data_json"
+   ],
+   "clock": "none",
+   "rows": 202,
+   "dropped": 0,
+   "meta": {}
+  },
+  "mocap": {
+   "file": "mocap.parquet",
+   "fields": [
+    "seq",
+    "host_ns",
+    "source_ts_s",
+    "source_seq"
+   ],
+   "clock": "natnet_frame",
+   "rows": 10971,
+   "dropped": 0,
+   "meta": {
+    "transport": "natnet",
+    "frame": "raw, pre rate-cap and pre origin-zeroing (replay OriginZeroer to re-derive)"
+   }
+  }
+ }
+}

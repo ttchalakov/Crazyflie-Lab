@@ -1,0 +1,129 @@
+{
+  "format_version": 1,
+  "created_wall_ns": 1790891453867683876,
+  "created_monotonic_ns": 255665352035204,
+  "closed_wall_ns": 1790891758874146189,
+  "status": "clean",
+  "error": null,
+  "empty_streams": [],
+  "example": "telemetry_bench",
+  "streams": {
+    "state_pos": {
+      "file": "state_pos.parquet",
+      "fields": [
+        "seq",
+        "host_ns",
+        "stm32_ms",
+        "stateEstimate.x",
+        "stateEstimate.y",
+        "stateEstimate.z",
+        "stateEstimate.vx",
+        "stateEstimate.vy",
+        "stateEstimate.vz"
+      ],
+      "clock": "stm32_ms",
+      "rows": 250,
+      "dropped": 0,
+      "meta": {
+        "log_var": "stateEstimate.vz:float",
+        "period_ms": "10"
+      }
+    },
+    "tba": {
+      "file": "tba.parquet",
+      "fields": [
+        "seq",
+        "host_ns",
+        "stm32_ms",
+        "tba.tick",
+        "tba.sin1",
+        "tba.cos1",
+        "tba.saw"
+      ],
+      "clock": "stm32_ms",
+      "rows": 249,
+      "dropped": 0,
+      "meta": {
+        "log_var": "tba.saw:float",
+        "period_ms": "10"
+      }
+    },
+    "mocap": {
+      "file": "mocap.parquet",
+      "fields": [
+        "seq",
+        "host_ns",
+        "source_ts_s",
+        "source_seq",
+        "x",
+        "y",
+        "z",
+        "qx",
+        "qy",
+        "qz",
+        "qw",
+        "latency_us"
+      ],
+      "clock": "natnet_frame",
+      "rows": 5001,
+      "dropped": 0,
+      "meta": {
+        "transport": "natnet",
+        "frame": "mocap_global",
+        "signal_stage": "raw source pose before rate-cap or runner transform"
+      }
+    },
+    "extpose": {
+      "file": "extpose.parquet",
+      "fields": [
+        "seq",
+        "host_ns",
+        "source_ts_s",
+        "source_seq",
+        "x",
+        "y",
+        "z",
+        "qx",
+        "qy",
+        "qz",
+        "qw"
+      ],
+      "clock": "none",
+      "rows": 242,
+      "dropped": 0,
+      "meta": {
+        "frame": "start_origin_yaw_zeroed",
+        "signal_stage": "as sent to the estimator"
+      }
+    },
+    "setpoints": {
+      "file": "setpoints.parquet",
+      "fields": [
+        "seq",
+        "host_ns",
+        "x",
+        "y",
+        "z",
+        "yaw_deg"
+      ],
+      "clock": "none",
+      "rows": 125,
+      "dropped": 0,
+      "meta": {}
+    },
+    "events": {
+      "file": "events.parquet",
+      "fields": [
+        "seq",
+        "host_ns",
+        "kind",
+        "message",
+        "data_json"
+      ],
+      "clock": "none",
+      "rows": 4,
+      "dropped": 0,
+      "meta": {}
+    }
+  }
+}

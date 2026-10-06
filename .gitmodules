@@ -1,0 +1,16 @@
+[submodule "external/crazyflie-firmware"]
+	path = external/crazyflie-firmware
+	url = https://github.com/IllinoisReliableAutonomyGroup/crazyflie-firmware.git
+	branch = master
+[submodule "external/nemo"]
+	path = external/nemo
+	url = https://github.com/pulp-platform/nemo.git
+	ignore = untracked
+[submodule "external/dory"]
+	path = external/dory
+	url = https://github.com/IllinoisReliableAutonomyGroup/dory.git
+	branch = master
+[submodule "external/aideck-esp-firmware"]
+	path = external/aideck-esp-firmware
+	url = https://github.com/IllinoisReliableAutonomyGroup/aideck-esp-firmware.git
+	branch = main

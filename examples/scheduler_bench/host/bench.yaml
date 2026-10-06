@@ -1,0 +1,73 @@
+# scheduler_bench settings. See ../README.md.
+#
+# A case is a network, a camera configuration and (state networks) a request
+# rate: "<network>-<sensor>-<format>[-<rate>hz]". Each case builds one image
+# holding both schedulers, which run back to back on the same boot: sequential,
+# then pipelined, each for timing.phase_ms.
+
+wifi:
+  ssid: aideck-sched
+  key: ""
+  channel: 1
+  deck_ip: 192.168.4.1
+  port: 5000
+  profile: aideck-sched
+
+timing:
+  phase_ms: 20000
+  settle_ms: 15000      # after setup, for the host to join the access point
+  boot_timeout_s: 90
+
+# Synthetic random-weight networks (host/sched_net.py), named as nn_bench names
+# them but without the input, which the camera supplies, and with the memory
+# model and, on l3, the arena: <network>-<memory>[-arena<N>k].
+#   mlp       a state policy; dims are the layer widths
+#   convpool  an image policy, built at each camera's frame size; units are
+#             c<channels>[s2][mp]: a 3x3 convolution (s2: stride 2), then (mp) a
+#             2x2 max pool; then a global average pool and a 4-output layer
+# l3 networks keep their weights in HyperRAM; arena_kb is the L2 DORY may use
+# for its arena (activations and weight tiles).
+networks:
+  mlp-12to64to64to4-l2:            {family: mlp, dims: [12, 64, 64, 4],   memory: l2}
+  mlp-12to256to256to4-l2:          {family: mlp, dims: [12, 256, 256, 4], memory: l2}
+  mlp-12to256to256to4-l3-arena64k: {family: mlp, dims: [12, 256, 256, 4], memory: l3, arena_kb: 64}
+  mlp-12to512to512to4-l3-arena64k: {family: mlp, dims: [12, 512, 512, 4], memory: l3, arena_kb: 64}
+  convpool-c4s2mp-c8mp-c16-out4-l2:
+    {family: convpool, units: [c4s2mp, c8mp, c16], memory: l2}
+  convpool-c4s2mp-c16mp-c32-c32-out4-l2:
+    {family: convpool, units: [c4s2mp, c16mp, c32, c32], memory: l2}
+  convpool-c4s2mp-c16mp-c32-c32-out4-l3-arena96k:
+    {family: convpool, units: [c4s2mp, c16mp, c32, c32], memory: l3, arena_kb: 96}
+  convpool-c16s2mp-c32mp-c64-c64-out4-l3-arena128k:
+    {family: convpool, units: [c16s2mp, c32mp, c64, c64], memory: l3, arena_kb: 128}
+# A QVGA frame through a 4-channel stride-2 stem is a 77 KB activation, next to
+# the 77 KB frame itself: the l2 networks fit at QVGA (with two camera buffers),
+# the l3 ones (whose arena also holds a copy of the input) only at QQVGA.
+
+# camera_stream settings (make variables of lib/gap8/sched), named as camera_bench
+# names its sensor modes and formats (jpegcl: the cluster JPEG encoder).
+cameras:
+  qvga60-jpegcl:   {SENSOR: QVGA_60,        FORMAT: JPEG}
+  qvga60-raw:      {SENSOR: QVGA_60,        FORMAT: RAW}
+  qqvga120-jpegcl: {SENSOR: QQVGA_BIN2_120, FORMAT: JPEG}
+  qqvga120-raw:    {SENSOR: QQVGA_BIN2_120, FORMAT: RAW}
+  qqvga60-jpegcl:  {SENSOR: QQVGA_BIN2_60,  FORMAT: JPEG}
+  qqvga60-raw:     {SENSOR: QQVGA_BIN2_60,  FORMAT: RAW}
+
+# State policies at these request rates.
+rates: [100, 200]
+
+sets:
+  mlp_smoke:
+    - mlp-12to64to64to4-l2-qqvga120-jpegcl-100hz
+  convpool_smoke:
+    - convpool-c4s2mp-c8mp-c16-out4-l2-qqvga120-jpegcl
+  common:
+    - mlp-12to64to64to4-l2-qqvga120-jpegcl-100hz
+    - mlp-12to64to64to4-l2-qqvga120-jpegcl-200hz
+    - mlp-12to256to256to4-l2-qvga60-jpegcl-200hz
+    - mlp-12to512to512to4-l3-arena64k-qqvga60-raw-100hz
+    - convpool-c4s2mp-c8mp-c16-out4-l2-qqvga120-jpegcl
+    - convpool-c4s2mp-c16mp-c32-c32-out4-l2-qvga60-jpegcl
+    - convpool-c4s2mp-c16mp-c32-c32-out4-l3-arena96k-qqvga60-raw
+    - convpool-c16s2mp-c32mp-c64-c64-out4-l3-arena128k-qqvga120-jpegcl

@@ -1,0 +1,20 @@
+# Lab platform: Crazyflie 2.1 Brushless.
+# CONFIG_PLATFORM_CF2 is not set
+CONFIG_PLATFORM_CF21BL=y
+CONFIG_MOTORS_REQUIRE_ARMING=y
+CONFIG_MOTORS_ESC_PROTOCOL_DSHOT=y
+
+CONFIG_APP_ENABLE=y
+CONFIG_APP_PRIORITY=1
+CONFIG_APP_STACKSIZE=350
+# Use the standard firmware controllers.
+# CONFIG_CONTROLLER_OOT is not set
+
+# Radio downlink buffers: more log blocks and variables, and a longer CRTP transmit
+# queue to absorb telemetry bursts (options added by cf-lab's firmware).
+CONFIG_CRTP_TX_QUEUE_SIZE=400
+CONFIG_LOG_MAX_BLOCKS=32
+CONFIG_LOG_MAX_OPS=255
+# Drop a radio packet on a full queue or bad checksum instead of asserting, which
+# reboots the drone and cuts the motors mid-flight.
+# CONFIG_RADIO_ASSERT_ON_COM_PROBLEM is not set

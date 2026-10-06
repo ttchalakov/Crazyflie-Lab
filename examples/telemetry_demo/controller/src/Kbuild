@@ -1,0 +1,2 @@
+include $(CF_LAB)/lib/stm32/cpx_bridge/cpx_bridge.mk
+obj-y += telemetry_demo.o

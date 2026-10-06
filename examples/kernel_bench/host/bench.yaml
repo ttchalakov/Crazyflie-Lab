@@ -1,0 +1,18 @@
+# kernel_bench sets. See ../README.md.
+#
+# A configuration builds the bench with its make variables. A set gives each
+# configuration its suites (configs/matrix.json suite or group names, or all):
+# in GVSOC each suite runs in its own container; on the AI-deck they are built
+# into one image. RESULTS.md lists the configurations in this order.
+
+configurations:
+  s8bias: {make: []}                                  # an int8 bias per output channel
+  i32bias: {make: [KBENCH_DORY_INT32_BIAS=1]}         # DORY's int32 bias
+
+sets:
+  common:
+    s8bias: {gvsoc: [smoke], aideck: [smoke]}
+
+  exhaustive:
+    s8bias: {gvsoc: [all], aideck: [all]}
+    i32bias: {gvsoc: [all], aideck: [conv3x3_outputs, dw3x3_outputs, conv1x1_outputs]}

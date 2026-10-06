@@ -1,0 +1,1 @@
+obj-y += mocap_waypoint.o

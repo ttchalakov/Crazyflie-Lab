@@ -1,0 +1,57 @@
+# configs/drone.yaml as the lab runs it, with dummy network names, keys and addresses.
+radio:
+  uri: radio://0/80/2M/E7E7E7E7E7
+
+mocap:
+  rigid_body: cf21bl_01
+  transport: natnet
+  stream_rate_hz: 100.0
+  vrpn:
+    ros_host: localhost
+    ros_port: 9090
+    topic: ""
+    orientation_format: quaternion
+  natnet:
+    server_ip: 192.0.2.10
+    multicast_ip: 239.255.42.99
+    command_port: 1510
+    data_port: 1511
+    local_ip: ""
+    use_multicast: false
+
+camera:
+  mode: station
+  station_ssid: dummy-station-2g
+  station_key: "dummy-station-key"
+  access_point_ssid: dummy-camera-ap
+  access_point_key: ""
+  access_point_channel: 6
+  deck_port: 5000
+  transport: tcp
+
+telemetry:
+  enabled: true
+  state_hz: 100.0
+  controls_hz: 100.0
+  setpoints: true
+  mocap: true
+  extpose: true
+  camera: false
+  custom:
+    sysid_imu:
+      period_ms: 20
+      variables: [acc.x:float, acc.y:float, acc.z:float, gyro.x:float, gyro.y:float, gyro.z:float]
+    sysid_motor_request:
+      period_ms: 40
+      variables: [motor.m1req:int32_t, motor.m2req:int32_t, motor.m3req:int32_t, motor.m4req:int32_t, pm.vbat:float]
+    sysid_motor_response:
+      period_ms: 40
+      variables:
+        - motor.m1:uint16_t
+        - motor.m2:uint16_t
+        - motor.m3:uint16_t
+        - motor.m4:uint16_t
+        - motor.m1_rpm:uint16_t
+        - motor.m2_rpm:uint16_t
+        - motor.m3_rpm:uint16_t
+        - motor.m4_rpm:uint16_t

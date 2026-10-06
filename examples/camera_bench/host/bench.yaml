@@ -1,0 +1,82 @@
+# camera_bench: the camera_stream regression bench. host/bench.py builds the
+# bench GAP8 app for each case, flashes it, measures the stream, and compares
+# the result with baseline.json. See ../README.md.
+
+# The deck's own access point for the bench (its GAP8 build), and the
+# NetworkManager profile this computer joins it with. bench.py creates the
+# profile on the first WiFi device if it is missing; it never takes the default
+# route, so a wired connection keeps the internet. channel: 1..13 (1..11 in the
+# US), or 0 for the ESP32 firmware's default (6); pick one away from strong
+# neighbouring networks (`nmcli device wifi list`).
+wifi:
+  ssid: camera-bench
+  key: ""
+  channel: 1
+  deck_ip: 192.168.4.1
+  port: 5000
+  profile: camera-bench
+
+timing:
+  warmup_s: 5          # after the first frame, before measuring
+  measure_s: 20
+  soak_s: 600          # the soak case
+  reconnects: 10       # the reconnect case: connect, wait for frames, disconnect
+  boot_timeout_s: 60   # power cycle to first frame
+
+acceptance:
+  camera_fps_tolerance: 0.02   # captured rate within 2 % of the sensor's
+  received_fps_ratio: 0.9      # received rate at least 90 % of the baseline's (advisory:
+                               # it follows the WiFi around the bench as much as the build)
+  latency_tolerance: 0.1       # deck resize and JPEG time within the baseline's + 10 %,
+  latency_floor_ms: 1.0        # or + 1 ms when that is larger
+
+# Every combination of these axes is a case, named from its settings, for
+# example qvga60-native-jpegcl-preview-tcp. Each value is the camera_stream make
+# variables it stands for (see examples/camera_stream/gap8/Makefile).
+matrix:
+  sensor:
+    qvga30: SENSOR=QVGA_30
+    qvga60: SENSOR=QVGA_60
+    qqvga30: SENSOR=QQVGA_BIN2_30
+    qqvga60: SENSOR=QQVGA_BIN2_60
+    qqvga120: SENSOR=QQVGA_BIN2_120
+  size:
+    native: ""
+    96sq: SIZE=96x96 FIT=SQUASH
+    96crop: SIZE=96x96 FIT=CROP
+  format:
+    raw: FORMAT=RAW
+    jpegfc: FORMAT=JPEG JPEG=FC
+    jpegcl: FORMAT=JPEG JPEG=CLUSTER
+  policy:
+    preview: POLICY=PREVIEW
+    exact: POLICY=EXACT
+    exact3: POLICY=EXACT BUFFERS=3
+  transport: [tcp, udp]
+  # Policies run at native size only: a resized frame gives its camera buffer
+  # back as soon as it is resized, so a third buffer has nothing to do there.
+  native_only: [exact3]
+
+# Cases that are not a plain measurement (kind: reconnect, lifecycle or soak),
+# each on a matrix case's build (`like`) plus any extra make variables.
+special:
+  reconnect: {like: qvga60-native-jpegcl-preview-tcp, kind: reconnect}
+  lifecycle: {like: qvga60-native-raw-preview-tcp, make: LIFECYCLE=1, kind: lifecycle}
+  soak:      {like: qvga60-native-jpegcl-preview-tcp, kind: soak}
+
+# Named selections for --set; `exhaustive` (every matrix case, plus reconnect
+# and lifecycle) is built in. Cases that share a build run back to back, so the
+# bench flashes once for them.
+sets:
+  # What people actually run, and the default.
+  common:
+    - qvga60-native-jpegcl-preview-tcp    # live video
+    - reconnect                           # ... and reconnecting to it
+    - qvga60-native-jpegcl-exact-tcp      # recording: no torn frames
+    - qvga60-native-jpegfc-preview-tcp    # video while a DORY network owns the cluster
+    - qvga30-native-raw-exact-tcp         # lossless frames: calibration, photogrammetry
+    - qqvga120-native-jpegcl-preview-tcp  # high frame rate
+    - qvga60-96crop-jpegcl-preview-tcp    # a neural network's input size
+    - qvga60-native-jpegcl-preview-udp    # live video over UDP
+    - lifecycle                           # camera start/stop/resume/close
+  long: [soak]

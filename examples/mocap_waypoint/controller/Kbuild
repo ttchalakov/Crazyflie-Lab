@@ -1,0 +1,5 @@
+# This example flashes the stock firmware (built-in controller), configured only
+# via app-config - there is no out-of-tree app or controller. The out-of-tree
+# build still has to emit a built-in.o for the firmware to link, so we compile
+# one placeholder translation unit under src/ that adds no behavior.
+obj-y += src/

@@ -1,0 +1,19 @@
+APP = flash_bench
+APP_SRCS = main.c
+PMSIS_OS = freertos
+io = uart
+
+CF_LAB ?= $(abspath $(CURDIR)/../../..)
+include $(CF_LAB)/lib/gap8/cpx/cpx.mk
+
+FB_ID ?= 1
+FB_INTERVAL_MS ?= 1000
+FB_SILENT ?= 0
+FB_PAYLOAD_BYTES ?= 4096
+FB_PAYLOAD ?=
+APP_CFLAGS += -O2 -g -DFB_ID=$(FB_ID) -DFB_INTERVAL_MS=$(FB_INTERVAL_MS)
+APP_CFLAGS += -DFB_SILENT=$(FB_SILENT) -DFB_PAYLOAD_BYTES=$(FB_PAYLOAD_BYTES)
+APP_CFLAGS += -DFS_PARTITIONTABLE_OFFSET=0x40000 -DTXQ_SIZE=8
+READFS_FILES = $(FB_PAYLOAD)
+
+include $(RULES_DIR)/pmsis_rules.mk

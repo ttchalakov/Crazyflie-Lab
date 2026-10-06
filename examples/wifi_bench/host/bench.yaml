@@ -1,0 +1,51 @@
+# wifi_bench cases and settings. See ../README.md.
+
+# The deck's access point, which the bench builds into the GAP8 app and joins
+# through its own NetworkManager profile (Ethernet keeps the default route).
+wifi:
+  ssid: wifi-bench
+  key: ""
+  channel: 1
+  deck_ip: 192.168.4.1
+  port: 5000
+  profile: wifi-bench
+
+timing:
+  stream_s: 3          # each stream-* case
+  soak_s: 3600         # the soak cases
+  integration_s: 30    # the integration cases
+  boot_timeout_s: 60   # power cycle to the deck answering
+
+acceptance:
+  udp_loss_max: 0.02         # advisory: UDP loses datagrams by design
+  esp_heap_min_bytes: 4096   # advisory: the ESP32's least free heap during a case
+  mbps_ratio: 0.9            # advisory: stream throughput at least 90 % of the baseline's
+  rtt_ratio: 1.5             # advisory: echo median RTT at most 1.5x the baseline's + 2 ms
+
+# The load for the soak and integration cases.
+load:
+  size: 1020
+  rate: 1000
+
+# STM32 telemetry recorded beside the WiFi load in the integration cases.
+telemetry:
+  enabled: true
+  state_hz: 100
+  controls_hz: 100
+  extpose: false
+  setpoints: false
+  camera: false
+  mocap: false
+
+# Every test in host/suite.py runs on each transport it applies to, named
+# <test>-<transport>, for example stream-1020x1000-udp; together they are the
+# built-in `common` set. These cases run on top of that matrix.
+special:
+  soak-tcp:        {kind: soak, transport: tcp}
+  soak-udp:        {kind: soak, transport: udp}
+  integration-tcp: {kind: integration, transport: tcp}
+  integration-udp: {kind: integration, transport: udp}
+
+sets:
+  long: [soak-tcp, soak-udp]
+  integration: [integration-tcp, integration-udp]
