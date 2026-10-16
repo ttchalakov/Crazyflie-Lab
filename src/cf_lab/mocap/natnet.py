@@ -3,8 +3,7 @@
 Motive streams rigid-body pose over its native NatNet protocol (UDP). This
 module joins the NatNet stream directly with the standard library and yields
 ``PoseSample`` objects, so the host can read OptiTrack pose without
-``vrpn_client_ros`` + ``rosbridge`` (the chain documented in
-examples/mocap_positioning/README.md). It is a drop-in replacement for
+``vrpn_client_ros`` + ``rosbridge``. It is a drop-in replacement for
 :class:`RosbridgePoseSource`.
 
 Conventions: the stream is passed through unchanged, so set Motive's streaming
@@ -111,7 +110,8 @@ class NatNetPoseSource:
         self._data_port = data_port
         self._local_ip = local_ip or "0.0.0.0"
         self._use_multicast = use_multicast
-        self._queue: Queue[PoseSample] = Queue(maxsize=1)  # only the newest pose
+        # Only the newest pose; None is close()'s wake-up for a waiting consumer.
+        self._queue: Queue[PoseSample | None] = Queue(maxsize=1)
         self._data_sock: socket.socket | None = None
         self._stop = threading.Event()
         self._thread: threading.Thread | None = None
@@ -160,6 +160,7 @@ class NatNetPoseSource:
         if self._thread is not None:
             self._thread.join(timeout=1.0)
             self._thread = None
+        self._publish(None)  # wake a consumer waiting in samples()
 
     def __enter__(self) -> "NatNetPoseSource":
         self.connect()
@@ -173,7 +174,9 @@ class NatNetPoseSource:
         if self._thread is None:
             self.connect()
         while not self._stop.is_set():
-            yield self._queue.get()
+            pose = self._queue.get()
+            if pose is not None:
+                yield pose
 
     def connected(self, within_s: float) -> bool:
         """Whether Motive sent anything in the last ``within_s``.
@@ -320,7 +323,7 @@ class NatNetPoseSource:
             if pose is not None:
                 self._publish(pose)
 
-    def _publish(self, pose: PoseSample) -> None:
+    def _publish(self, pose: PoseSample | None) -> None:
         if self._queue.full():
             try:
                 self._queue.get_nowait()

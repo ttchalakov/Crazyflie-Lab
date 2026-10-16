@@ -2,6 +2,7 @@
 import math
 import socket
 import struct
+import threading
 import time
 import types
 
@@ -211,6 +212,28 @@ def test_receive_path_hands_the_consumer_only_the_newest_pose(fake_motive, wire,
         source.close()
 
 
+def test_close_releases_a_consumer_waiting_for_the_next_pose(fake_motive, wire, kit):
+    fake_motive(
+        server_info=wire.server_info(),
+        modeldefs=[wire.modeldef([("rb", "cf21bl_01", 7)])],
+        frames=[wire.frame(1, _bodies())],
+    )
+    source = NatNetPoseSource(server_ip=kit.server_ip)
+    received = []
+
+    def consume():
+        for pose in source.samples():
+            received.append(pose)
+
+    consumer = threading.Thread(target=consume, daemon=True)
+    consumer.start()
+    _wait_for(lambda: received)  # it now waits for a second frame that never comes
+    source.close()
+    consumer.join(timeout=2.0)
+    assert not consumer.is_alive()
+    assert [pose.source_seq for pose in received] == [1]
+
+
 def _wait_for(condition, timeout_s=2.0):
     deadline = time.monotonic() + timeout_s
     while not condition():
@@ -262,7 +285,6 @@ def test_pose_watch_tells_an_untracked_body_from_a_lost_connection(fake_motive, 
     finally:
         streamer.stop()
         source.close()
-        source._publish(kit.pose())  # release the streamer thread
 
 
 # -- the lab's Motive, from captured packets ------------------------------------
