@@ -11,8 +11,15 @@ Conventions: the stream is passed through unchanged, so set Motive's streaming
 **Up Axis to Z** (Data Streaming pane) — exactly the gotcha the VRPN path also
 relies on — and the frame is already +z up in metres to match the estimator.
 
+Only the NatNet 4.2 bitstream is parsed. Motive's output bitstream is one
+Motive-wide setting that any client can change (a ROS driver may leave it at
+4.0, for unicast and multicast alike), and its server info reports 4.2 whatever
+it is set to, so connect() asks Motive for 4.2 every time.
+
 Both modes query Motive's command port to resolve the asset name before reading
-poses. Multicast data needs no registration; unicast registers for streaming.
+poses. ``use_multicast`` must match Motive's Transmission Type, which connect()
+checks against the server info. Multicast data needs no registration; unicast
+registers for streaming.
 """
 
 from __future__ import annotations
@@ -31,14 +38,17 @@ from cf_lab.mocap.types import PoseSample, Quaternion
 # NatNet message ids (header is "<HH" = message_id, payload_byte_count).
 NAT_CONNECT = 0
 NAT_SERVERINFO = 1
+NAT_REQUEST = 2
+NAT_RESPONSE = 3
 NAT_REQUEST_MODELDEF = 4
 NAT_MODELDEF = 5
 NAT_FRAMEOFDATA = 7
 NAT_KEEPALIVE = 10
 
 
-def _rigid_body_descriptions(data: bytes, major: int, minor: int) -> list[tuple[str, int]]:
-    """Read standalone asset names/IDs from NatNet 2.x–4.x model descriptions."""
+def _rigid_body_descriptions(data: bytes) -> list[tuple[str, int]]:
+    """Read standalone asset names/IDs from NatNet 4.2 model descriptions, where
+    each record is prefixed with its kind and byte size."""
     offset = 0
 
     def skip(size: int) -> None:
@@ -66,63 +76,14 @@ def _rigid_body_descriptions(data: bytes, major: int, minor: int) -> list[tuple[
         skip(end - start + 1)
         return data[start:end].decode("utf-8")
 
-    def rigid_body() -> tuple[str, int]:
-        name = string()
-        ident = integer()
-        skip(16)  # parent ID + position offset
-        if major >= 3:
-            markers = count()
-            skip(markers * 16)  # XYZ offsets + active labels
-            if major >= 4:
-                for _ in range(markers):
-                    string()
-        return name, ident
-
-    if major < 2:
-        raise ValueError("Rigid-body name lookup requires NatNet 2.0 or newer")
     bodies = []
     for _ in range(count()):
         kind = integer()
-        if (major, minor) >= (4, 1):
-            size = count()
-            end = offset + size
-            if end > len(data):
-                raise ValueError("Truncated NatNet description record")
-            if kind == 1:
-                name, ident = string(), integer()
-                if offset + 16 > end:
-                    raise ValueError("Truncated rigid-body description")
-                bodies.append((name, ident))
-            offset = end  # Skip other versioned asset types by their record size.
-        elif kind == 0:  # marker set
-            string()
-            for _ in range(count()):
-                string()
-        elif kind == 1:
-            bodies.append(rigid_body())
-        elif kind == 2:  # skeleton: bones are not standalone assets
-            string()
-            integer()
-            for _ in range(count()):
-                rigid_body()
-        elif kind == 3 and major >= 3:  # force plate
-            integer()
-            string()
-            skip(8 + 12 + 12 * 12 * 4 + 4 * 3 * 4 + 8)
-            for _ in range(count()):
-                string()
-        elif kind == 4 and major >= 3:  # device
-            integer()
-            string()
-            string()
-            skip(8)
-            for _ in range(count()):
-                string()
-        elif kind == 5:  # camera
-            string()
-            skip(28)
-        else:
-            raise ValueError(f"Unsupported NatNet description type {kind}")
+        size = count()
+        end = offset + size
+        if kind == 1:  # a rigid body; skeleton bones are not standalone assets
+            bodies.append((string(), integer()))
+        skip(end - offset)  # the rest of the record, whatever its kind
     return bodies
 
 
@@ -138,7 +99,7 @@ class NatNetPoseSource:
         command_port: int = NatNetConfig.command_port,
         data_port: int = NatNetConfig.data_port,
         local_ip: str = "",
-        use_multicast: bool = True,
+        use_multicast: bool = NatNetConfig.use_multicast,
     ) -> None:
         self._server_ip = server_ip
         self._rigid_body = rigid_body
@@ -154,13 +115,11 @@ class NatNetPoseSource:
         self._data_sock: socket.socket | None = None
         self._stop = threading.Event()
         self._thread: threading.Thread | None = None
-        # Motive's NatNet protocol version; >= 3.0 dropped inline marker data
-        # from the rigid-body block. Default to 3 if the probe finds nothing.
-        self._nn_major = 3
-        self._nn_minor = 0
         self.server_name = ""
-        # Motive's high-resolution clock (NatNet 3.0+), for frame latency.
+        # From Motive's server info: its high-resolution clock, for frame latency,
+        # and whether it streams multicast (its Transmission Type).
         self._clock_hz = 0
+        self._server_multicast = False
         self._arrival_ns: int | None = None
 
     # -- lifecycle -----------------------------------------------------------
@@ -170,6 +129,13 @@ class NatNetPoseSource:
         self._probe_server_info()
         if not self.server_name:
             raise RuntimeError("Cannot query Motive: check the NatNet server IP and command port")
+        if self._server_multicast != self._use_multicast:
+            mode, flag = ("multicast", "true") if self._server_multicast else ("unicast", "false")
+            raise ValueError(
+                f"Motive is streaming {mode}: set mocap.natnet.use_multicast to {flag} "
+                "to match Motive's Transmission Type"
+            )
+        self._request_bitstream()
         self._rigid_id = self._resolve_rigid_body()
         self._data_sock = self._open_data_socket()
         if not self._use_multicast:
@@ -244,7 +210,7 @@ class NatNetPoseSource:
         return sock
 
     def _probe_server_info(self) -> None:
-        """Ping the command port to confirm reachability and learn the version.
+        """Ping the command port to confirm reachability, and read Motive's clock and mode.
 
         connect() requires a successful reply before decoding model descriptions.
         """
@@ -257,15 +223,37 @@ class NatNetPoseSource:
                 cmd.sendto(struct.pack("<HH", NAT_CONNECT, 0), (self._server_ip, self._command_port))
                 data, _ = cmd.recvfrom(2048)
             message_id = struct.unpack("<H", data[0:2])[0]
-            if message_id == NAT_SERVERINFO and len(data) >= 4 + 264:
+            if message_id == NAT_SERVERINFO:
                 payload = data[4:]
                 self.server_name = payload[0:256].split(b"\0", 1)[0].decode("utf-8", "replace")
-                self._nn_major = payload[260]
-                self._nn_minor = payload[261]
-                if self._nn_major >= 3 and len(payload) >= 272:
-                    (self._clock_hz,) = struct.unpack_from("<Q", payload, 264)
+                (self._clock_hz,) = struct.unpack_from("<Q", payload, 264)
+                self._server_multicast = bool(payload[274])
         except OSError:
             pass  # connect() reports failure before starting the receive task.
+
+    def _request_bitstream(self) -> None:
+        """Ask Motive to stream the NatNet 4.2 bitstream, the one parsed here.
+
+        Motive applies the request to its whole output, in either Transmission
+        Type, but in unicast it takes it only from a connected client, so the
+        socket connects (NAT_CONNECT) first. A description request sent the
+        instant Motive accepts can still be answered in the old bitstream (3 of 20
+        tries; never one sent a millisecond later), so wait briefly before the
+        asset lookup.
+        """
+        command = b"Bitstream,4.2\0"
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as cmd:
+            cmd.bind((self._local_ip, 0))
+            cmd.connect((self._server_ip, self._command_port))
+            cmd.settimeout(0.75)
+            cmd.send(struct.pack("<HH", NAT_CONNECT, 0))
+            cmd.send(struct.pack("<HH", NAT_REQUEST, len(command)) + command)
+            while struct.unpack_from("<H", reply := cmd.recv(65535))[0] != NAT_RESPONSE:
+                pass  # the server info answering NAT_CONNECT
+            (result,) = struct.unpack_from("<i", reply, 4)
+        if result != 0:
+            raise RuntimeError("Motive did not accept the request for the NatNet 4.2 bitstream")
+        time.sleep(0.1)
 
     def _resolve_rigid_body(self) -> int:
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as cmd:
@@ -287,7 +275,7 @@ class NatNetPoseSource:
                         continue
                     if len(packet) != size + 4:
                         raise ValueError("Truncated NatNet model descriptions")
-                    bodies = _rigid_body_descriptions(packet[4:], self._nn_major, self._nn_minor)
+                    bodies = _rigid_body_descriptions(packet[4:])
                     matches = [ident for name, ident in bodies if name == self._rigid_body]
                     if len(matches) == 1:
                         return matches[0]
@@ -354,9 +342,8 @@ class NatNetPoseSource:
         if rb is None:
             return None
         _rb_id, position, quat = rb
-        # A corrupt frame, or an untracked body before NatNet 2.6 (no tracking
-        # flag: Motive sends it as a zero pose), must neither reach the drone nor
-        # end this thread, which a zero quaternion's normalization would.
+        # A corrupt frame must neither reach the drone nor end this thread, which
+        # a zero quaternion's normalization would.
         if not all(map(math.isfinite, (*position, *quat))) or not any(quat):
             return None
         return PoseSample(
@@ -372,27 +359,18 @@ class NatNetPoseSource:
     def _latency_s(self, data: bytes) -> float | None:
         """Motive's mid-exposure-to-transmit time for this frame, or None.
 
-        The frame suffix holds both stamps on Motive's high-resolution clock.
-        Reaching it means skipping every section, which only NatNet 4.1+ makes
-        safe (each section is prefixed with its byte size): marker sets, other
-        markers, rigid bodies, skeletons, assets, labeled markers, force plates
-        and devices; then timecode, timecode sub-frame and the timestamp.
+        The frame suffix holds both stamps on Motive's high-resolution clock. It
+        ends every frame at a fixed size, so the three stamps (mid-exposure,
+        received, transmit) start 38 bytes before the end of the packet, ahead of
+        the precision timestamp (two uint32), the frame params (int16) and the
+        end-of-data tag (int32).
         """
-        if not self._size_prefixed or self._clock_hz <= 0:
-            return None
-        try:
-            offset = 8  # message header, frame number
-            for _ in range(8):
-                offset = self._skip_sized_section(data, offset)
-            offset += 4 + 4 + 8
-            mid_exposure, _received, transmit = struct.unpack_from("<QQQ", data, offset)
-        except struct.error:
-            return None
+        mid_exposure, _received, transmit = struct.unpack_from("<QQQ", data, len(data) - 38)
         latency = (transmit - mid_exposure) / self._clock_hz
         return latency if 0.0 <= latency < 1.0 else None
 
     def _first_matching_rigid_body(self, data: bytes, offset: int):
-        """Parse a NatNet FrameOfData far enough to return one rigid body.
+        """Parse a FrameOfData far enough to return one rigid body.
 
         Returns ``(id, (x,y,z), (qx,qy,qz,qw))`` for the configured streaming id
         resolved from the configured asset name, else ``None``.
@@ -401,43 +379,22 @@ class NatNetPoseSource:
         """
         offset += 4  # frame number (int32)
 
-        # Skip the marker-set and legacy "other" marker sections. NatNet 4.1+
-        # prefixes each section with (count, byte_size), so we can jump the
-        # whole block; older streams pack items inline and we walk them.
-        if self._size_prefixed:
-            offset = self._skip_sized_section(data, offset)  # marker sets
-            offset = self._skip_sized_section(data, offset)  # other markers
-            (n_rigid,) = struct.unpack_from("<i", data, offset)
-            offset += 8  # rigid-body count + block byte_size (we parse items)
-        else:
-            (n_sets,) = struct.unpack_from("<i", data, offset)
-            offset += 4
-            for _ in range(n_sets):
-                offset = data.index(b"\0", offset) + 1  # null-terminated name
-                (n_markers,) = struct.unpack_from("<i", data, offset)
-                offset += 4 + n_markers * 12
-            (n_other,) = struct.unpack_from("<i", data, offset)
-            offset += 4 + n_other * 12
-            (n_rigid,) = struct.unpack_from("<i", data, offset)
-            offset += 4
+        # Jump the marker-set and legacy "other" marker sections: NatNet 4.2
+        # prefixes each section with (count, byte_size).
+        offset = self._skip_sized_section(data, offset)  # marker sets
+        offset = self._skip_sized_section(data, offset)  # other markers
+        (n_rigid,) = struct.unpack_from("<i", data, offset)
+        offset += 8  # rigid-body count + block byte_size (we parse items)
 
         for _ in range(n_rigid):
             (rb_id,) = struct.unpack_from("<i", data, offset)
             offset += 4
             x, y, z, qx, qy, qz, qw = struct.unpack_from("<7f", data, offset)
             offset += 28
-            if 0 < self._nn_major < 3:
-                # Pre-3.0 streams carried marker data inside each rigid body.
-                (n_rb_markers,) = struct.unpack_from("<i", data, offset)
-                offset += 4 + n_rb_markers * 12
-                if self._nn_major >= 2:
-                    offset += n_rb_markers * 8  # marker ids + sizes
             offset += 4  # mean marker error (float)
-            tracked = True
-            if self._nn_major >= 3 or (self._nn_major == 2 and self._nn_minor >= 6):
-                (params,) = struct.unpack_from("<h", data, offset)
-                offset += 2
-                tracked = bool(params & 0x01)
+            (params,) = struct.unpack_from("<h", data, offset)
+            offset += 2
+            tracked = bool(params & 0x01)
             if not tracked:
                 continue
             rb = (rb_id, (x, y, z), (qx, qy, qz, qw))
@@ -445,13 +402,8 @@ class NatNetPoseSource:
                 return rb
         return None
 
-    @property
-    def _size_prefixed(self) -> bool:
-        """NatNet 4.1 added a (count, byte_size) prefix to frame sections."""
-        return (self._nn_major, self._nn_minor) >= (4, 1)
-
     @staticmethod
     def _skip_sized_section(data: bytes, offset: int) -> int:
-        """Skip a NatNet 4.1+ section: int32 count, int32 byte_size, then data."""
+        """Skip a NatNet 4.2 section: int32 count, int32 byte_size, then data."""
         (byte_size,) = struct.unpack_from("<i", data, offset + 4)
         return offset + 8 + byte_size

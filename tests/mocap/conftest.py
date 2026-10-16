@@ -20,40 +20,26 @@ DATA = Path(__file__).parent / "data"
 SERVER_IP = "10.0.0.5"
 
 
-# -- NatNet wire format, written from the NatNet SDK packet layout -------------
-
-
-def _sized(version) -> bool:
-    return tuple(version) >= (4, 1)
+# -- NatNet 4.2 wire format, the bitstream the client asks Motive for -----------
 
 
 def _cstr(text: str) -> bytes:
     return text.encode() + b"\0"
 
 
-def frame_body(version, rb_id, position, quat, *, tracked=True, n_markers=2) -> bytes:
-    major, minor = version
+def frame_body(rb_id, position, quat, *, tracked=True) -> bytes:
     out = struct.pack("<i3f4f", rb_id, *position, *quat)
-    if 0 < major < 3:
-        out += struct.pack("<i", n_markers)
-        out += b"".join(struct.pack("<3f", 0.01 * i, 0.02, 0.03) for i in range(n_markers))
-        if major >= 2:
-            out += b"".join(struct.pack("<i", 100 + i) for i in range(n_markers))
-            out += b"".join(struct.pack("<f", 0.014) for _ in range(n_markers))
     out += struct.pack("<f", 0.0003)  # mean marker error
-    if major > 2 or (major == 2 and minor >= 6):
-        # bit 0 = tracking valid; other bits set so only bit 0 may decide.
-        out += struct.pack("<h", 0x06 | (0x01 if tracked else 0))
+    # bit 0 = tracking valid; other bits set so only bit 0 may decide.
+    out += struct.pack("<h", 0x06 | (0x01 if tracked else 0))
     return out
 
 
-def frame_packet(version, frame_number, bodies, *, stamps=(1_000_000, 1_010_000, 1_040_000)) -> bytes:
+def frame_packet(frame_number, bodies, *, stamps=(1_000_000, 1_010_000, 1_040_000)) -> bytes:
     """A FrameOfData; ``bodies`` is a list of (id, position, quat, tracked)."""
-    major, minor = version
-    sized = _sized(version)
 
     def section(count: int, payload: bytes) -> bytes:
-        return struct.pack("<i", count) + (struct.pack("<i", len(payload)) if sized else b"") + payload
+        return struct.pack("<ii", count, len(payload)) + payload
 
     marker_sets = [("cf21bl_01", 4), ("all", 6)]
     sets = b"".join(
@@ -63,44 +49,30 @@ def frame_packet(version, frame_number, bodies, *, stamps=(1_000_000, 1_010_000,
     out = struct.pack("<i", frame_number)
     out += section(len(marker_sets), sets)
     out += section(3, b"".join(struct.pack("<3f", 1.0, 2.0, 3.0) for _ in range(3)))
-    out += section(
-        len(bodies),
-        b"".join(frame_body(version, i, p, q, tracked=t) for i, p, q, t in bodies),
-    )
-    if sized:
-        # Sections the parser must jump by byte size: junk payloads of odd length.
-        out += section(1, b"\xa5" * 37)  # skeletons
-        out += section(1, b"\x5a" * 23)  # assets
-        out += section(2, b"\x11" * 52)  # labeled markers
-        out += section(0, b"")  # force plates
-        out += section(1, b"\x22" * 9)  # devices
-    else:
-        out += section(0, b"")  # skeletons
-        out += section(0, b"")  # labeled markers
-        out += section(0, b"")  # force plates
-        out += section(0, b"")  # devices
+    out += section(len(bodies), b"".join(frame_body(i, p, q, tracked=t) for i, p, q, t in bodies))
+    # Sections the parser must jump by byte size: junk payloads of odd length.
+    out += section(1, b"\xa5" * 37)  # skeletons
+    out += section(1, b"\x5a" * 23)  # assets
+    out += section(2, b"\x11" * 52)  # labeled markers
+    out += section(0, b"")  # force plates
+    out += section(1, b"\x22" * 9)  # devices
     out += struct.pack("<IId", 0x01020304, 0, 12.5)  # timecode, sub-frame, timestamp
-    if major >= 3:
-        out += struct.pack("<QQQ", *stamps)
-    if sized:
-        out += struct.pack("<II", 1_700_000_000, 123)
+    out += struct.pack("<QQQ", *stamps)
+    out += struct.pack("<II", 1_700_000_000, 123)  # precision timestamp
     out += struct.pack("<hi", 0, 0)  # params, end-of-data tag
     return struct.pack("<HH", natnet.NAT_FRAMEOFDATA, len(out)) + out
 
 
-def _rb_desc(version, name, ident, n_markers=3) -> bytes:
-    major = version[0]
+def _rb_desc(name, ident, n_markers=3) -> bytes:
     out = _cstr(name) + struct.pack("<ii3f", ident, -1, 0.0, 0.0, 0.0)
-    if major >= 3:
-        out += struct.pack("<i", n_markers)
-        out += b"".join(struct.pack("<3f", 0.01 * i, 0.0, 0.0) for i in range(n_markers))
-        out += b"".join(struct.pack("<i", i + 1) for i in range(n_markers))
-        if major >= 4:
-            out += b"".join(_cstr(f"Marker{i + 1}") for i in range(n_markers))
+    out += struct.pack("<i", n_markers)
+    out += b"".join(struct.pack("<3f", 0.01 * i, 0.0, 0.0) for i in range(n_markers))
+    out += b"".join(struct.pack("<i", i + 1) for i in range(n_markers))
+    out += b"".join(_cstr(f"Marker{i + 1}") for i in range(n_markers))
     return out
 
 
-def modeldef_packet(version, assets) -> bytes:
+def modeldef_packet(assets) -> bytes:
     """Model descriptions; ``assets`` items are tuples tagged by kind:
     ("markers", name), ("rb", name, id), ("skeleton", name, id, [(bone, id), ...]),
     ("force_plate",), ("device",), ("camera", name), ("raw", kind, payload).
@@ -111,11 +83,11 @@ def modeldef_packet(version, assets) -> bytes:
         if tag == "markers":
             kind, body = 0, _cstr(asset[1]) + struct.pack("<i", 2) + _cstr("m1") + _cstr("m2")
         elif tag == "rb":
-            kind, body = 1, _rb_desc(version, asset[1], asset[2])
+            kind, body = 1, _rb_desc(asset[1], asset[2])
         elif tag == "skeleton":
             bones = asset[3]
             body = _cstr(asset[1]) + struct.pack("<ii", asset[2], len(bones))
-            body += b"".join(_rb_desc(version, n, i) for n, i in bones)
+            body += b"".join(_rb_desc(n, i) for n, i in bones)
             kind = 2
         elif tag == "force_plate":
             body = struct.pack("<i", 1) + _cstr("FP-0001") + struct.pack("<2f3f", 0.6, 0.4, 0, 0, 0)
@@ -132,17 +104,15 @@ def modeldef_packet(version, assets) -> bytes:
             kind, body = asset[1], asset[2]
         else:
             raise ValueError(tag)
-        header = struct.pack("<i", kind) + (struct.pack("<i", len(body)) if _sized(version) else b"")
-        records.append(header + body)
+        records.append(struct.pack("<ii", kind, len(body)) + body)
     payload = struct.pack("<i", len(records)) + b"".join(records)
     return struct.pack("<HH", natnet.NAT_MODELDEF, len(payload)) + payload
 
 
-def server_info_packet(version, *, name="Motive", clock_hz=10_000_000) -> bytes:
-    major, minor = version
-    payload = name.encode().ljust(256, b"\0") + bytes([3, 1, 0, 0]) + bytes([major, minor, 0, 0])
-    if major >= 3:
-        payload += struct.pack("<QH?4s", clock_hz, 1511, False, socket.inet_aton("239.255.42.99"))
+def server_info_packet(*, multicast=False, clock_hz=10_000_000) -> bytes:
+    """Motive 3.3.4.1's server info: NatNet 4.2, its clock and its Transmission Type."""
+    payload = b"Motive".ljust(256, b"\0") + bytes([3, 3, 4, 1]) + bytes([4, 2, 0, 0])
+    payload += struct.pack("<QH?4s", clock_hz, 1511, multicast, socket.inet_aton("239.255.42.99"))
     return struct.pack("<HH", natnet.NAT_SERVERINFO, len(payload)) + payload
 
 
@@ -239,6 +209,8 @@ class FakeMotive:
         elif message_id == natnet.NAT_REQUEST_MODELDEF:
             for packet in self.modeldefs:
                 sock.inbox.put(packet)
+        elif message_id == natnet.NAT_REQUEST:  # "Bitstream,4.2", accepted like Motive does
+            sock.inbox.put(struct.pack("<HHi", natnet.NAT_RESPONSE, 4, 0))
 
     def commands_from(self, sock: FakeSocket | None) -> list[int]:
         return [
@@ -266,13 +238,13 @@ def fake_motive(monkeypatch):
 
 @pytest.fixture
 def natnet_parser(fake_motive, wire):
-    """A NatNetPoseSource connected (then closed) against a fake Motive of ``version``,
-    with the target asset 'cf21bl_01' resolved to streaming id 7."""
+    """A NatNetPoseSource connected (then closed) against a fake Motive, with the
+    target asset 'cf21bl_01' resolved to streaming id 7."""
 
-    def build(version, *, clock_hz=10_000_000) -> natnet.NatNetPoseSource:
+    def build(*, clock_hz=10_000_000) -> natnet.NatNetPoseSource:
         fake_motive(
-            server_info=wire.server_info(version, clock_hz=clock_hz),
-            modeldefs=[wire.modeldef(version, [("rb", "other", 2), ("rb", "cf21bl_01", 7)])],
+            server_info=wire.server_info(clock_hz=clock_hz),
+            modeldefs=[wire.modeldef([("rb", "other", 2), ("rb", "cf21bl_01", 7)])],
         )
         source = natnet.NatNetPoseSource(server_ip=SERVER_IP, rigid_body="cf21bl_01")
         source.connect()
@@ -341,6 +313,24 @@ def kit():
     return types.SimpleNamespace(
         pose=make_pose, Source=ScriptedSource, Backend=RecordingBackend, server_ip=SERVER_IP
     )
+
+
+# -- the lab's Motive, as captured ----------------------------------------------
+
+
+@pytest.fixture(scope="session")
+def motive_packets():
+    """What the lab's Motive 3.3.4.1 sent on 2026-10-16 in each Transmission Type,
+    streaming the 4.2 bitstream: its server info, model descriptions and one frame.
+    Rigid bodies: cf_ege (id 62), cf1 (id 29) and the drone, cf_teo (id 63), lying
+    flat on the floor."""
+    return {
+        mode: types.SimpleNamespace(
+            **{name: (DATA / "motive_packets" / mode / f"{name}.bin").read_bytes()
+               for name in ("server_info", "model_def", "frame")}
+        )
+        for mode in ("multicast", "unicast")
+    }
 
 
 # -- real NatNet flight (see data/make_flight_sample.py) -----------------------
