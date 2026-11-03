@@ -165,6 +165,7 @@ Docker, so only the STM32 toolchain is installed on the host.
 | [jpeg_cluster_bench](examples/jpeg_cluster_bench) | Verification bench for the GAP8 JPEG encoder, FC and cluster | gap8, host |
 | [hyperbus_bench](examples/hyperbus_bench) | AI-deck HyperFlash, flash filesystem and HyperRAM checks | gap8, host |
 | [flash_bench](examples/flash_bench) | Regression bench for GAP8 flashing over the radio | gap8, host |
+| [stm32_nn_bench](examples/stm32_nn_bench) | MLPs on the STM32 in float32 and int8/int16, bit-checked against the host, and their effect on the stabilizer loop | controller, host |
 
 Each example's README has its build, flash, and run steps.
 

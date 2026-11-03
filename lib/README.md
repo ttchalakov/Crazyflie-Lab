@@ -10,7 +10,12 @@ lib/
     cpx_bridge.h             the application-packet bridge API
     img_protocol.h           the image wire format the GAP8 and host share
   shared/src/cpx_bridge.c    the bridge core
+  shared/include/cf_lab/nn.h small MLPs (float32, int8, int16): the same bits on the STM32 and the host
+  shared/include/cf_lab/fpmath.h  bit-reproducible exp, sigmoid, tanh, SiLU, sin/cos
   stm32/cpx_bridge/          STM32 bridge adapter and Kbuild fragment
+  stm32/nn/                  Kbuild fragment for the MLP kernels, and their measured speed
+  stm32/timing/              cycle counter and loop statistics (header only)
+  stm32/clock_sync/          clock pings for cf_lab.timing (the STM32's clock on the host's)
   gap8/
     cpx/                     CPX transport (GAP8 <-> ESP32 over SPI)
     cpx_bridge/              GAP8 bridge adapter

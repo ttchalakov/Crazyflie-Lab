@@ -1,0 +1,12 @@
+include $(CF_LAB)/lib/stm32/nn/nn.mk
+ccflags-y += -I$(CF_LAB)/lib/stm32/timing/inc -I$(srctree)/vendor/CMSIS/CMSIS/NN/Include
+obj-y += nn_bench.o nnb_controller.o nnb_generated.o nnb_cmsis_fc_s8.o nnb_cmsis_vec_mat_s8.o
+CFLAGS_nn_bench.o += -ffp-contract=off
+# CMSIS-NN's int8 fully connected layer from the firmware's vendored CMSIS, for the timing comparison.
+CF_NNB_CMSIS_NN := $(srctree)/vendor/CMSIS/CMSIS/NN/Source
+$(obj)/nnb_cmsis_fc_s8.o: $(CF_NNB_CMSIS_NN)/FullyConnectedFunctions/arm_fully_connected_s8.c FORCE
+	$(call if_changed_rule,cc_o_c)
+$(obj)/nnb_cmsis_vec_mat_s8.o: $(CF_NNB_CMSIS_NN)/NNSupportFunctions/arm_nn_vec_mat_mult_t_s8.c FORCE
+	$(call if_changed_rule,cc_o_c)
+CFLAGS_nnb_cmsis_fc_s8.o += -O2
+CFLAGS_nnb_cmsis_vec_mat_s8.o += -O2

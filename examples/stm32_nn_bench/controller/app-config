@@ -1,0 +1,20 @@
+# Crazyflie 2.1 Brushless with the AI-deck: the network benchmark runs in the app task beside the stock
+# stabilizer and controllers. The motors are never armed.
+# CONFIG_PLATFORM_CF2 is not set
+CONFIG_PLATFORM_CF21BL=y
+CONFIG_MOTORS_REQUIRE_ARMING=y
+CONFIG_MOTORS_ESC_PROTOCOL_DSHOT=y
+
+CONFIG_APP_ENABLE=y
+CONFIG_APP_PRIORITY=1
+CONFIG_APP_STACKSIZE=512
+# The stock INDI (or PID), timed by src/nnb_controller.c.
+CONFIG_CONTROLLER_OOT=y
+
+# Without the Loco deck driver the TDoA engine's 13.8 kB of core-coupled RAM is free for the placement test.
+# CONFIG_DECK_LOCO is not set
+CONFIG_ESTIMATOR_KALMAN_ENABLE=y
+
+# Drop a radio packet on a full queue or bad checksum instead of asserting, which
+# reboots the drone and cuts the motors mid-flight.
+# CONFIG_RADIO_ASSERT_ON_COM_PROBLEM is not set

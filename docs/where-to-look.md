@@ -34,6 +34,7 @@
 | `jpeg_cluster_bench` | Verification bench for the GAP8 JPEG encoder, FC and cluster | gap8, host |
 | `hyperbus_bench` | AI-deck HyperFlash, flash filesystem and HyperRAM checks | gap8, host |
 | `flash_bench` | Regression bench for GAP8 flashing over the radio | gap8, host |
+| `stm32_nn_bench` | MLPs in every `cf_lab.nn` format on the STM32, bit-checked against the host, and their effect on the stabilizer loop | controller, host |
 
 Each example's README has its build, flash and run steps. Run the examples
 from the repository root.
@@ -53,6 +54,8 @@ from the repository root.
 | `cf_lab.preflight` | Read-only checks before flying |
 | `cf_lab.sim` | Differentiable, batched vehicle simulation |
 | `cf_lab.aideck` | Compiling a model for the GAP8 and flashing the AI-deck |
+| `cf_lab.nn` | Quantizing small MLPs for the STM32, writing their C, and running that C on the host |
+| `cf_lab.timing` | The STM32's clock on the host's, by ping-pong over the radio |
 
 ## Neural networks
 

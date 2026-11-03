@@ -44,6 +44,9 @@ examples/**/gap8/BUILD/
 # build/flash.
 examples/*/gap8/*/generated/
 
+# Networks and test inputs the STM32 network bench writes before each build (host/bench.py).
+examples/stm32_nn_bench/controller/src/nnb_generated.*
+
 # Model inputs the pipeline materializes rather than carries: the checkpoint and
 # calibration .npy (written by the model module's train or make-artifacts
 # command) and any ONNX export. A fresh clone regenerates them. Only the model
