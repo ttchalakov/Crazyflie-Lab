@@ -460,6 +460,8 @@ def _start_mocap(
 ) -> tuple[object | None, ExtposeStreamer | None, Exception | None]:
     try:
         source = build_live_pose_source(cfg=cfg)
+        # Connect first, so the check's window measures the stream, not the handshake.
+        source.connect()
         streamer = ExtposeStreamer(
             source=source,
             backend=_DiscardExtposeBackend(),

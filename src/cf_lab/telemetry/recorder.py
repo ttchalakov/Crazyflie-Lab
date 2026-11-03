@@ -295,7 +295,7 @@ class _MocapRecordPump(threading.Thread):
         super().__init__(daemon=True, name="mocap-record-pump")
         self._source = tapped_source
         self._writer = writer
-        self._stop = threading.Event()
+        self._stop_event = threading.Event()
         self.recorded = 0
         self.error: Exception | None = None
 
@@ -305,7 +305,7 @@ class _MocapRecordPump(threading.Thread):
         try:
             for _pose in iter_pose_samples(self._source, start_s=0.0, dt_s=_MOCAP_PUMP_DT_S):
                 self.recorded += 1
-                if self._stop.is_set():
+                if self._stop_event.is_set():
                     return
         except Exception as exc:  # recording stops; nothing else is affected
             self.error = exc
@@ -313,9 +313,9 @@ class _MocapRecordPump(threading.Thread):
     def stop(self, *, timeout_s: float = 2.0) -> None:
         """Stop pulling, close the source so a blocked read can unblock, and
         record the outcome as a ``mocap_recorded`` event. Idempotent."""
-        if self._stop.is_set():
+        if self._stop_event.is_set():
             return
-        self._stop.set()
+        self._stop_event.set()
         close = getattr(self._source, "close", None)
         if close is not None:
             try:

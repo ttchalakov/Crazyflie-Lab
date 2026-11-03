@@ -125,8 +125,8 @@ client (`src/cf_lab/mocap/natnet.py`, standard library only).
    match `mocap.rigid_body` in `configs/drone.yaml` (default `cf21bl_01`). In the
    **Data Streaming** pane set the **Up Axis to Z**, so the streamed frame is +z
    up to match the estimator (Motive defaults to Y-up), and tick **Broadcast
-   Frame Data** under **NatNet**. Multicast is Motive's default and needs no
-   handshake.
+   Frame Data** under **NatNet**. Note its **Transmission Type** (Unicast or
+   Multicast): `mocap.natnet.use_multicast` must match it.
 2. **Host:** put the Motive PC's IP in the config and run:
 
 ```yaml
@@ -141,13 +141,20 @@ mocap:
   --source optitrack --backend radio --config configs/drone.yaml
 ```
 
-Your laptop must be on the **same network/subnet** as the Motive PC for the
-multicast frames to reach it. Useful `mocap.natnet` keys:
+Your laptop must be on the **same network/subnet** as the Motive PC for
+Motive's frames to reach it. Useful `mocap.natnet` keys:
 
-- `local_ip: <laptop IP>` — pins the NIC that joins the multicast group (use it
-  if the laptop has several interfaces, e.g. WiFi + Ethernet).
-- `use_multicast: false` — if multicast is blocked on your network; the client
-  then pings Motive's command port so it streams to you directly.
+- `local_ip: <laptop IP>` — pins the NIC that receives the frames (use it if
+  the laptop has several interfaces, e.g. WiFi + Ethernet).
+- `use_multicast` — `false` (the default) for Motive's Unicast, where the client
+  registers with Motive's command port so it streams to you directly; `true`
+  for Multicast. If it does not match Motive, the connection stops with a
+  message saying which value to set.
+
+On every connection the client asks Motive for the NatNet 4.2 bitstream, the
+only one it parses. That setting is Motive-wide, for unicast and multicast alike:
+a client that asked for an older bitstream (some ROS drivers ask for 4.0) gets
+4.2 from then on.
 - `multicast_ip` / `data_port` / `command_port` — only if you changed Motive's
   defaults (`239.255.42.99`, `1511`, `1510`).
 

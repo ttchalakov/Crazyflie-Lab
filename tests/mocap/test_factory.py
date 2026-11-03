@@ -28,12 +28,11 @@ def test_unknown_source_kind_is_rejected():
 
 @pytest.mark.parametrize("use_multicast", [False, True])
 def test_natnet_transport_connects_with_every_configured_setting(fake_motive, wire, kit, use_multicast):
-    version = (4, 1)
     net = fake_motive(
         server=(kit.server_ip, 1610),
-        server_info=wire.server_info(version),
-        modeldefs=[wire.modeldef(version, [("rb", "cf21bl_01", 3), ("rb", "cf21bl_07", 8)])],
-        frames=[wire.frame(version, 9, [(8, (1.0, 2.0, 3.0), (0.0, 0.0, 0.0, 1.0), True)])],
+        server_info=wire.server_info(multicast=use_multicast),
+        modeldefs=[wire.modeldef([("rb", "cf21bl_01", 3), ("rb", "cf21bl_07", 8)])],
+        frames=[wire.frame(9, [(8, (1.0, 2.0, 3.0), (0.0, 0.0, 0.0, 1.0), True)])],
     )
     cfg = _cfg(
         transport="natnet",

@@ -307,6 +307,9 @@ def test_preflight_unavailable_mocap_fails_its_check_and_closes_the_source(
     closed = []
 
     class Source:
+        def connect(self):
+            pass
+
         def close(self):
             closed.append(True)
 

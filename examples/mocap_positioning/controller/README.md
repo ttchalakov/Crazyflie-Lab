@@ -16,8 +16,8 @@ reds outside). `led.bitmask` is the firmware's sanctioned LED override and drive
 the GPIOs directly; a raw `ledSet()` from a controller is gated by the LED
 sequencer, so the host path is the reliable one.
 
-The box is an axis-aligned rectangle defined by a centre and per-axis
-half-extents in the host-zeroed mocap frame (origin at the start pose, +z up).
+The box is an axis-aligned rectangle defined by a centre and full side widths
+in the host-zeroed mocap frame (origin at the start pose, +z up).
 The host pushes the configured geometry into the `box.*` parameters on connect;
 the firmware defaults (centre (0, 0, 1.5), widths 2.0 x 1.0 x 1.0) are a
 fallback.
@@ -29,7 +29,7 @@ and the firmware force-stops the motors of an un-armed drone — so the props
 physically cannot spin and the firmware's pre-flight/tumble auto-disarms never
 apply. The demo ends only when the host asks (Ctrl-C or SPACE in the runner).
 
-Parameters: `box.centerX/Y/Z`, `box.halfX/Y/Z` (metres).
+Parameters: `box.centerX/Y/Z`, `box.sizeX/Y/Z` (full side widths, metres).
 Log group `box`: `inside` (uint8), `posX`, `posY`, `posZ`.
 
 Build and flash:

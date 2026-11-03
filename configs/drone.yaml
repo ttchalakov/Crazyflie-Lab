@@ -3,7 +3,7 @@ radio:
   uri: radio://0/80/2M/E7E7E7E7E7
 
 mocap:
-  rigid_body: cf21bl_01
+  rigid_body: cf_teo
   # Live transport that `--source optitrack` resolves to: vrpn | natnet.
   transport: natnet
   stream_rate_hz: 100.0      # extpose uplink rate cap / fake-source pacing
@@ -21,7 +21,7 @@ mocap:
     command_port: 1510
     data_port: 1511
     local_ip: ""            # this laptop's IP on the Motive net (picks the NIC)
-    use_multicast: false     # Motive streams Unicast in this lab (not multicast)
+    use_multicast: false     # must match Motive's Transmission Type (Unicast | Multicast)
 
 # AI-deck image stream. `cf-lab build gap8` / `cf-lab flash gap8` build these
 # WiFi settings into apps that use them (camera_stream, hover_neural_network), and

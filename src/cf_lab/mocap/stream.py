@@ -117,7 +117,7 @@ class ExtposeStreamer(threading.Thread):
         self._dt_s = 1.0 / max_rate_hz
         self._pace = pace
         self._transform = transform
-        self._stop = threading.Event()
+        self._stop_event = threading.Event()
         self.sent = 0
         self.dropped = 0
         self.latest: PoseSample | None = None
@@ -171,7 +171,7 @@ class ExtposeStreamer(threading.Thread):
                 source_pose = pose
                 received_s = time.monotonic()
                 self.latest_received_monotonic_s = received_s
-                if self._stop.is_set():
+                if self._stop_event.is_set():
                     return
                 if not self._pace and time.monotonic() < next_allowed_s:
                     self.dropped += 1
@@ -203,13 +203,13 @@ class ExtposeStreamer(threading.Thread):
                         forwarded_monotonic_s=forwarded_s,
                     )
                 )
-                if self._pace and self._stop.wait(self._dt_s):
+                if self._pace and self._stop_event.wait(self._dt_s):
                     return
         except Exception as exc:  # surfaced by callers polling .error
             self.error = exc
 
     def stop(self) -> None:
-        self._stop.set()
+        self._stop_event.set()
 
     def start_pose_watch(self, timeout_s: float) -> None:
         """From now on, check_poses() raises MocapLost once no pose has been

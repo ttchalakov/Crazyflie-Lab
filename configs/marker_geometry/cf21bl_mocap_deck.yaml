@@ -1,0 +1,24 @@
+# Where the mocap beads and the IMU are on the drone, for examples/mocap_alignment.
+# Body axes, millimetres: x front, y left, z up, origin at the deck's centre hole.
+#
+# The holes of the Bitcraze motion capture marker deck (datasheet, Rev 1), 5 mm apart:
+#   centre block  x in {-10, -5, 0, 5, 10}, y in {-5, 0, 5}
+#   arms          (+-15, +-20, +-25, +-30, 0) and (0, +-15, +-20, +-25, +-30)
+#   corner tabs   about (+-13, +-13)
+# Only the holes holding a bead are listed, at least three of them, asymmetric enough
+# that the triangle has one way up. Which asset marker is in which hole is worked out.
+# The end holes of the arms keep the beads clear of the drone's middle: a bead at
+# (-20, 0) was measured 4 mm off its hole.
+deck_holes_mm:
+  - [30, 0]
+  - [0, 30]
+  - [0, -30]
+
+# Beads sit flush on the deck, so their centres are one radius above its top surface.
+bead_diameter_mm: 12.7
+
+# The prior for the IMU's position, used if the motion fit cannot be trusted.
+imu_xy_mm: [0, 0]             # the IMU from the deck centre
+# Deck top down to the main PCB's top surface, measured from the side: a battery sits
+# between them and this shifts when the battery is swapped or after a crash.
+imu_z_from_deck_top_mm: -10

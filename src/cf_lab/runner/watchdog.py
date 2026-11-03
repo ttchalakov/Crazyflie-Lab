@@ -30,11 +30,11 @@ class WatchdogHeartbeat(threading.Thread):
         self._ping = ping
         self._rearm = rearm
         self._period_s = period_s
-        self._stop = threading.Event()
+        self._stop_event = threading.Event()
         self.pings = 0
 
     def run(self) -> None:
-        while not self._stop.wait(self._period_s):
+        while not self._stop_event.wait(self._period_s):
             try:
                 self._ping()
                 if self._rearm is not None:
@@ -46,4 +46,4 @@ class WatchdogHeartbeat(threading.Thread):
             self.pings += 1
 
     def stop(self) -> None:
-        self._stop.set()
+        self._stop_event.set()

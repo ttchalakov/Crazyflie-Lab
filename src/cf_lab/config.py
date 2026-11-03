@@ -32,7 +32,8 @@ class NatNetConfig:
     command_port: int = 1510
     data_port: int = 1511
     local_ip: str = ""
-    use_multicast: bool = True
+    # Must match Motive's Transmission Type (Data Streaming pane): Unicast or Multicast.
+    use_multicast: bool = False
 
 
 @dataclass(frozen=True)
