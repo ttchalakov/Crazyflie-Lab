@@ -18,6 +18,7 @@ dependencies = [
   "cflib>=0.1.28",
   "kaleido>=1.0",
   "numpy>=1.26",
+  "scipy>=1.11",
   "plotly>=6.1",
   "PyYAML>=6.0.2",
   "roslibpy>=1.7",

@@ -30,9 +30,10 @@ import threading
 import time
 from collections.abc import Iterator
 from queue import Queue
+from typing import NamedTuple
 
 from cf_lab.config import NatNetConfig
-from cf_lab.mocap.types import PoseSample, Quaternion
+from cf_lab.mocap.types import PoseSample, Quaternion, Vector3
 
 # NatNet message ids (header is "<HH" = message_id, payload_byte_count).
 NAT_CONNECT = 0
@@ -45,9 +46,20 @@ NAT_FRAMEOFDATA = 7
 NAT_KEEPALIVE = 10
 
 
-def _rigid_body_descriptions(data: bytes) -> list[tuple[str, int]]:
-    """Read standalone asset names/IDs from NatNet 4.2 model descriptions, where
-    each record is prefixed with its kind and byte size."""
+class RigidBodyDescription(NamedTuple):
+    name: str
+    ident: int
+    # Marker offsets from the asset's pivot, in metres, in the streamed Z-up axes.
+    markers_m: tuple[Vector3, ...]
+
+
+def _rigid_body_descriptions(data: bytes) -> list[RigidBodyDescription]:
+    """Read standalone assets from NatNet 4.2 model descriptions, where each record
+    is prefixed with its kind and byte size.
+
+    Motive sends the marker offsets in its native Y-up axes even when it streams
+    Z-up: (x, y, z) here is (x, -z, y) in the streamed frame.
+    """
     offset = 0
 
     def skip(size: int) -> None:
@@ -75,13 +87,24 @@ def _rigid_body_descriptions(data: bytes) -> list[tuple[str, int]]:
         skip(end - start + 1)
         return data[start:end].decode("utf-8")
 
+    def marker() -> Vector3:
+        start = offset
+        skip(12)
+        x, y, z = struct.unpack_from("<3f", data, start)
+        return (x, -z, y)
+
+    def rigid_body() -> RigidBodyDescription:
+        name, ident = string(), integer()
+        skip(4 + 12 + 16)  # parent ID, offset from the parent, orientation
+        return RigidBodyDescription(name, ident, tuple(marker() for _ in range(count())))
+
     bodies = []
     for _ in range(count()):
         kind = integer()
         size = count()
         end = offset + size
         if kind == 1:  # a rigid body; skeleton bones are not standalone assets
-            bodies.append((string(), integer()))
+            bodies.append(rigid_body())
         skip(end - offset)  # the rest of the record, whatever its kind
     return bodies
 
@@ -116,6 +139,8 @@ class NatNetPoseSource:
         self._stop = threading.Event()
         self._thread: threading.Thread | None = None
         self.server_name = ""
+        # The asset's marker offsets, as Motive describes them at connect().
+        self.marker_offsets_m: tuple[Vector3, ...] = ()
         # From Motive's server info: its high-resolution clock, for frame latency,
         # and whether it streams multicast (its Transmission Type).
         self._clock_hz = 0
@@ -279,10 +304,11 @@ class NatNetPoseSource:
                     if len(packet) != size + 4:
                         raise ValueError("Truncated NatNet model descriptions")
                     bodies = _rigid_body_descriptions(packet[4:])
-                    matches = [ident for name, ident in bodies if name == self._rigid_body]
+                    matches = [body for body in bodies if body.name == self._rigid_body]
                     if len(matches) == 1:
-                        return matches[0]
-                    names = ", ".join(name for name, _ in bodies) or "(none)"
+                        self.marker_offsets_m = matches[0].markers_m
+                        return matches[0].ident
+                    names = ", ".join(body.name for body in bodies) or "(none)"
                     raise ValueError(
                         f"Motive rigid body {self._rigid_body!r} must match exactly one asset; "
                         f"found {len(matches)}. Available rigid bodies: {names}"

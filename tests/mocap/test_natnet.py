@@ -38,6 +38,10 @@ def _payload(packet):
     return packet[4:]
 
 
+def _names_and_ids(bodies):
+    return [(body.name, body.ident) for body in bodies]
+
+
 # -- model descriptions --------------------------------------------------------
 
 
@@ -46,7 +50,7 @@ def test_model_descriptions_list_standalone_rigid_bodies_past_every_asset_kind(w
               ("skeleton", "walker", 30, [("Hip", 31), ("cf21bl_01", 32)]), ("camera", "Prime13"),
               ("rb", "cf21bl_01", 7)]
     packet = wire.modeldef(assets)
-    assert _rigid_body_descriptions(_payload(packet)) == [("other", 2), ("cf21bl_01", 7)]
+    assert _names_and_ids(_rigid_body_descriptions(_payload(packet))) == [("other", 2), ("cf21bl_01", 7)]
 
 
 def test_model_descriptions_reject_every_truncation(wire):
@@ -58,7 +62,7 @@ def test_model_descriptions_reject_every_truncation(wire):
 
 def test_model_descriptions_skip_unknown_asset_records_by_size(wire):
     packet = wire.modeldef([("raw", 6, b"\x01\x02\x03" * 11), ("rb", "cf21bl_01", 7)])
-    assert _rigid_body_descriptions(_payload(packet)) == [("cf21bl_01", 7)]
+    assert _names_and_ids(_rigid_body_descriptions(_payload(packet))) == [("cf21bl_01", 7)]
 
 
 # -- connect: Motive query and asset resolution -------------------------------
@@ -132,6 +136,15 @@ def test_connect_names_the_setting_when_motive_streams_the_other_mode(
     with pytest.raises(ValueError, match=message):
         NatNetPoseSource(server_ip=kit.server_ip, use_multicast=not motive_multicast).connect()
     assert net.data_socket is None
+
+
+def test_connect_reads_the_asset_marker_offsets_in_the_streamed_axes(fake_motive, motive_packets, kit):
+    packets = motive_packets["unicast"]
+    fake_motive(server_info=packets.server_info, modeldefs=[packets.model_def])
+    source = NatNetPoseSource(server_ip=kit.server_ip, rigid_body="cf_teo")
+    source.connect()
+    source.close()
+    assert source.marker_offsets_m[1] == pytest.approx((0.0596, 0.0581, -0.0035), abs=2e-4)
 
 
 def test_connect_fails_before_opening_data_socket_when_motive_is_silent(fake_motive, wire, kit):
@@ -292,9 +305,14 @@ def test_pose_watch_tells_an_untracked_body_from_a_lost_connection(fake_motive, 
 
 @pytest.mark.parametrize("mode", ["multicast", "unicast"])
 def test_lab_model_descriptions_list_its_rigid_bodies(motive_packets, mode):
-    assert _rigid_body_descriptions(_payload(motive_packets[mode].model_def)) == [
-        ("cf_ege", 62), ("cf1", 29), ("cf_teo", 63)
-    ]
+    bodies = _rigid_body_descriptions(_payload(motive_packets[mode].model_def))
+    assert _names_and_ids(bodies) == [("cf_ege", 62), ("cf1", 29), ("cf_teo", 63)]
+    # Motive sends these Y-up; in the streamed Z-up axes they match the live markers of
+    # this asset (front-left guard, deck, rear-right guard...).
+    cf_teo = bodies[2].markers_m
+    assert len(cf_teo) == 5
+    assert cf_teo[0] == pytest.approx((-0.0190, 0.0606, -0.0009), abs=2e-4)
+    assert cf_teo[4] == pytest.approx((-0.0582, -0.0737, -0.0025), abs=2e-4)
 
 
 @pytest.mark.parametrize(

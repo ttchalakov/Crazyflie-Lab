@@ -158,6 +158,7 @@ Docker, so only the STM32 toolchain is installed on the host.
 | [wifi_bench](examples/wifi_bench) | Regression bench for the AI-deck WiFi link, GAP8 to ESP32 to host, over TCP and UDP | gap8, host |
 | [mocap_positioning](examples/mocap_positioning) | Propellers-off live mocap position indicator | controller, host |
 | [mocap_waypoint](examples/mocap_waypoint) | Flying mocap waypoint demo on the stock PID controller | controller, host |
+| [mocap_alignment](examples/mocap_alignment) | Aligns a Motive rigid body with the drone's IMU, from hand motion and bead geometry | host |
 | [hover_neural_network](examples/hover_neural_network) | PyTorch hover policy run at 100 Hz on the GAP8 alongside JPEG video | controller, gap8, host, model |
 | [nn_bench](examples/nn_bench) | Whole DORY networks in GVSOC and on the GAP8, every layer checked against the host | gap8, host |
 | [scheduler_bench](examples/scheduler_bench) | DORY networks sharing the GAP8 with the camera and the WiFi video stream | gap8, host |

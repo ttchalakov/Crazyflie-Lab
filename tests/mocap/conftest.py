@@ -64,7 +64,7 @@ def frame_packet(frame_number, bodies, *, stamps=(1_000_000, 1_010_000, 1_040_00
 
 
 def _rb_desc(name, ident, n_markers=3) -> bytes:
-    out = _cstr(name) + struct.pack("<ii3f", ident, -1, 0.0, 0.0, 0.0)
+    out = _cstr(name) + struct.pack("<ii3f4f", ident, -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     out += struct.pack("<i", n_markers)
     out += b"".join(struct.pack("<3f", 0.01 * i, 0.0, 0.0) for i in range(n_markers))
     out += b"".join(struct.pack("<i", i + 1) for i in range(n_markers))
